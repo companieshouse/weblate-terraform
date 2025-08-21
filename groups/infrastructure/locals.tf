@@ -66,10 +66,9 @@ locals {
 
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
-    { "name" : "POSTGRES_HOST", "value" : "${aws_db_instance.weblate.address}" },
-    { "name" : "POSTGRES_DB", "value" : "${aws_db_instance.weblate.db_name}" },
-    { "name" : "REDIS_HOST", "value" : "${aws_elasticache_replication_group.weblate.primary_endpoint_address}" }
-
+    { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
+    { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
+    { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address }
   ])
 
   # ECS SETTINGS (COMMON)
@@ -160,22 +159,25 @@ locals {
   # Define a local that builds the config map for all services
   ecs_service_configs = {
     for c in local.ecs_custom_vars :
-    c.service_name => merge(
-      local.ecs_common,
-      c,
-      var.ecs_configs[c.service_name],
-      {
-        service_name = "weblate-${c.service_name}"
-      },
-      {
-        app_environment_filename = "weblate-${c.service_name}.env"
-      },
-      {
-        task_environment = concat(lookup(c.task_environment, local.task_environment), [
-          { "name" : "WEBLATE_SERVICE", "value" : "${c.service_name}" }
-        ])
-      }
-    )
+      c.service_name => merge(
+        local.ecs_common,
+        c,
+        var.ecs_configs[c.service_name],
+        {
+          service_name             = "weblate-${c.service_name}"
+          app_environment_filename = "weblate-${c.service_name}.env"
+          task_environment = concat(
+            local.ecs_common.task_environment,
+            lookup(c, "task_environment", []), # service-specific (if any)
+            [
+              {
+                name  = "WEBLATE_SERVICE"
+                value = c.service_name
+              }
+            ]
+          )
+        }
+      )
   }
 
 }
