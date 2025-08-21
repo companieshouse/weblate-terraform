@@ -17,6 +17,7 @@ module "ecs-service" {
   # ECS Task container health check
   use_task_container_healthcheck    = var.config.use_task_container_healthcheck
   healthcheck_command               = var.config.healthcheck_command
+  healthcheck_path                  = var.config.healthcheck_path
   health_check_grace_period_seconds = var.config.health_check_grace_period_seconds
   healthcheck_healthy_threshold     = var.config.healthcheck_healthy_threshold
 

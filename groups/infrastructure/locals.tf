@@ -99,7 +99,7 @@ locals {
     docker_registry   = var.docker_registry
     docker_repo       = "weblate-image"
     container_version = var.weblate_image_version
-    container_port    = 9000 # ecs module default
+    container_port    = 9000 # module-ecs default
 
     # Service configuration
     name_prefix = local.name_prefix
@@ -136,6 +136,11 @@ locals {
       lb_listener_arn           = data.aws_lb_listener.rand_lb_listener.arn
       lb_listener_rule_priority = 35
       lb_listener_paths         = ["/weblate", "/weblate/*"]
+
+      healthcheck_path                  = ["/weblate/healthz"]
+      health_check_grace_period_seconds = 300
+      healthcheck_healthy_threshold     = "2"
+
     },
     {
       service_name = "celery-celery"
