@@ -137,7 +137,7 @@ locals {
       lb_listener_rule_priority = 35
       lb_listener_paths         = ["/weblate", "/weblate/*"]
 
-      healthcheck_path                  = ["/weblate/healthz"]
+      healthcheck_path                  = "/weblate/healthz"
       health_check_grace_period_seconds = 300
       healthcheck_healthy_threshold     = "2"
 
@@ -165,25 +165,25 @@ locals {
   # Define a local that builds the config map for all services
   ecs_service_configs = {
     for c in local.ecs_custom_vars :
-      c.service_name => merge(
-        local.ecs_common,
-        c,
-        var.ecs_configs[c.service_name],
-        {
-          service_name             = "weblate-${c.service_name}"
-          app_environment_filename = "weblate-${c.service_name}.env"
-          task_environment = concat(
-            local.ecs_common.task_environment,
-            lookup(c, "task_environment", []), # service-specific (if any)
-            [
-              {
-                name  = "WEBLATE_SERVICE"
-                value = c.service_name
-              }
-            ]
-          )
-        }
-      )
+    c.service_name => merge(
+      local.ecs_common,
+      c,
+      var.ecs_configs[c.service_name],
+      {
+        service_name             = "weblate-${c.service_name}"
+        app_environment_filename = "weblate-${c.service_name}.env"
+        task_environment = concat(
+          local.ecs_common.task_environment,
+          lookup(c, "task_environment", []), # service-specific (if any)
+          [
+            {
+              name  = "WEBLATE_SERVICE"
+              value = c.service_name
+            }
+          ]
+        )
+      }
+    )
   }
 
 }
