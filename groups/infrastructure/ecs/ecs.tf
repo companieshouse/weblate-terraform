@@ -24,7 +24,7 @@ module "ecs-service" {
   docker_registry   = var.config.docker_registry
   docker_repo       = var.config.docker_repo
   container_version = var.config.container_version
-  container_port    = try(var.config.container_port, null)
+  container_port    = var.config.container_port
 
   # Service configuration
   service_name  = var.config.service_name
