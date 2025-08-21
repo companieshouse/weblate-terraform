@@ -99,7 +99,6 @@ locals {
     docker_registry   = var.docker_registry
     docker_repo       = "weblate-image"
     container_version = var.weblate_image_version
-    container_port    = 9000 # module-ecs default
 
     # Service configuration
     name_prefix = local.name_prefix
