@@ -132,10 +132,6 @@ locals {
       batch_service  = false
       container_port = 8080
 
-      # Service environment variable configs
-      task_environment = concat(task_environment, [
-      ])
-
       # Load balancer configuration
       lb_listener_arn           = data.aws_lb_listener.rand_lb_listener.arn
       lb_listener_rule_priority = 35
