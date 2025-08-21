@@ -160,7 +160,7 @@ locals {
   # Define a local that builds the config map for all services
   ecs_service_configs = {
     for c in local.ecs_custom_vars :
-    c.name => merge(
+    c.service_name => merge(
       local.ecs_common,
       c,
       var.ecs_configs[c.service_name],
