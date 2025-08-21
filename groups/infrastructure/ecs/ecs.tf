@@ -17,8 +17,6 @@ module "ecs-service" {
   # ECS Task container health check
   use_task_container_healthcheck    = var.config.use_task_container_healthcheck
   healthcheck_command               = var.config.healthcheck_command
-  healthcheck_path                  = var.config.healthcheck_path
-  healthcheck_matcher               = var.config.healthcheck_matcher
   health_check_grace_period_seconds = var.config.health_check_grace_period_seconds
   healthcheck_healthy_threshold     = var.config.healthcheck_healthy_threshold
 
@@ -26,7 +24,7 @@ module "ecs-service" {
   docker_registry   = var.config.docker_registry
   docker_repo       = var.config.docker_repo
   container_version = var.config.container_version
-  container_port    = var.config.container_port
+  container_port    = try(var.config.container_port, null)
 
   # Service configuration
   service_name  = var.config.service_name
