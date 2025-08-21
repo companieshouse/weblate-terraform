@@ -1,6 +1,9 @@
 module "ecs-service" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.340"
 
+  for_each = var.config
+  ${each.key} = each.value
+
   # Environmental configuration
   environment             = var.config.environment
   aws_region              = var.config.aws_region
@@ -17,7 +20,7 @@ module "ecs-service" {
   # ECS Task container health check
   use_task_container_healthcheck    = var.config.use_task_container_healthcheck
   healthcheck_command               = var.config.healthcheck_command
-  healthcheck_path                  = var.config.healthcheck_path
+  healthcheck_path                  = try(var.config.healthcheck_path, null)
   health_check_grace_period_seconds = var.config.health_check_grace_period_seconds
   healthcheck_healthy_threshold     = var.config.healthcheck_healthy_threshold
 

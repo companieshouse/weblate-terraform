@@ -140,7 +140,6 @@ locals {
       healthcheck_path                  = "/weblate/healthz"
       health_check_grace_period_seconds = 300
       healthcheck_healthy_threshold     = "2"
-
     },
     {
       service_name = "celery-celery"
