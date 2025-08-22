@@ -66,9 +66,12 @@ locals {
 
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
+    { name : "WEBLATE_DEBUG", value : "1" },
+    { name : "WEBLATE_LOGLEVEL", value : "TRACE" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
     { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
     { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address }
+
   ])
 
   # ECS SETTINGS (COMMON)
