@@ -23,11 +23,6 @@ module "secrets" {
   secrets     = nonsensitive(local.service_secrets)
 }
 
-resource "aws_security_group" "weblate_all_ecs_sg" {
-  name        = "ecs-tasks-sg"
-  description = "Security group for all weblate ECS tasks"
-  vpc_id      = aws_vpc.main.id
-}
 # run 1st: celery-beat only (which should start before the other ECS services)
 module "ecs-service-celery-beat" {
   source = "./ecs"
