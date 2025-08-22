@@ -114,21 +114,21 @@ variable "ecs_configs" {
   }))
   default = {
     "web" = {
-      desired_task_count = 2
+      desired_task_count = 1
       max_task_count     = 2
-      required_cpus      = 1024
+      required_cpus      = 256
       required_memory    = 1024
     }
     "celery-celery" = {
       desired_task_count = 1
       max_task_count     = 2
-      required_cpus      = 1024
+      required_cpus      = 256
       required_memory    = 2048
     }
     "celery-translate" = {
       desired_task_count = 1
       max_task_count     = 2
-      required_cpus      = 2048
+      required_cpus      = 256
       required_memory    = 4096
     }
     "celery-notify" = {
@@ -140,13 +140,13 @@ variable "ecs_configs" {
     "celery-memory" = {
       desired_task_count = 1
       max_task_count     = 2
-      required_cpus      = 1024
+      required_cpus      = 256
       required_memory    = 4096
     }
     "celery-backup" = {
       desired_task_count = 1
       max_task_count     = 1
-      required_cpus      = 512
+      required_cpus      = 256
       required_memory    = 1024
     }
     "celery-beat" = {
