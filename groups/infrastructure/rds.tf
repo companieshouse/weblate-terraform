@@ -27,7 +27,7 @@ resource "aws_db_instance" "weblate" {
   identifier              = "${var.environment}-${local.whole_service_name}-postgresdb"
   engine                  = "postgres"
   engine_version          = "17.5"
-  instance_class          = "db.t3.small"
+  instance_class          = "db.t3.medium"
   db_name                 = "${var.postgres_db}"
   username                = local.db_master_username
   password                = local.db_master_password
