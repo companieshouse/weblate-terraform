@@ -5,18 +5,18 @@ resource "aws_security_group" "rds_sg" {
 }
 
 # Ingress rules for each weblate ECS SG into Postgres
-resource "aws_security_group_rule" "rds_from_ecs" {
-  for_each = merge(
-    module.ecs-services,
-    module.ecs-service-celery-beat
-  )
-  type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
-  protocol                 = "tcp"
-  source_security_group_id = each.value.security_group_id
-  security_group_id        = aws_security_group.rds_sg.id
-}
+# resource "aws_security_group_rule" "rds_from_ecs" {
+#   for_each = merge(
+#     module.ecs-services,
+#     module.ecs-service-celery-beat
+#   )
+#   type                     = "ingress"
+#   from_port                = 5432
+#   to_port                  = 5432
+#   protocol                 = "tcp"
+#   source_security_group_id = each.value.security_group_id
+#   security_group_id        = aws_security_group.rds_sg.id
+# }
 resource "aws_db_subnet_group" "weblate" {
   name       = "${var.environment}-db-subnets"
   subnet_ids = local.application_subnet_ids
