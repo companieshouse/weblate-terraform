@@ -128,7 +128,7 @@ variable "ecs_configs" {
     "celery-translate" = {
       desired_task_count = 1
       max_task_count     = 2
-      required_cpus      = 256
+      required_cpus      = 512
       required_memory    = 4096
     }
     "celery-notify" = {
@@ -140,7 +140,7 @@ variable "ecs_configs" {
     "celery-memory" = {
       desired_task_count = 1
       max_task_count     = 2
-      required_cpus      = 256
+      required_cpus      = 1024
       required_memory    = 4096
     }
     "celery-backup" = {
