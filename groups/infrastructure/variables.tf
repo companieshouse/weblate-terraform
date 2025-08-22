@@ -91,6 +91,12 @@ variable "weblate_image_version" {
   default     = "latest"
 }
 
+variable "postgres_db" {
+  type = string
+  description = "name of the postgres database"
+  default = "weblate"
+}
+
 # ------------------------------------------------------------------------------
 # ECS Services - environment variable configs
 # ------------------------------------------------------------------------------

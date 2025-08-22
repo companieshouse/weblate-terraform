@@ -24,11 +24,11 @@ resource "aws_db_subnet_group" "weblate" {
   subnet_ids = local.application_subnet_ids
 }
 resource "aws_db_instance" "weblate" {
-  identifier              = local.db_name
+  identifier              = "${var.environment}-${local.whole_service_name}-postgresdb"
   engine                  = "postgres"
   engine_version          = "17.5"
   instance_class          = "db.t3.small"
-  db_name                 = local.db_name
+  db_name                 = "${var.postgres_db}"
   username                = local.db_master_username
   password                = local.db_master_password
   allocated_storage       = 20

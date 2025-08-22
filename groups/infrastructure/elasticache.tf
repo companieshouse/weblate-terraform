@@ -27,7 +27,7 @@ resource "aws_elasticache_subnet_group" "weblate" {
 resource "aws_elasticache_replication_group" "weblate" {
   description                = "Weblate Redis"
   replication_group_id       = "${var.environment}-${local.whole_service_name}"
-  automatic_failover_enabled = true
+  automatic_failover_enabled = false
   node_type                  = "cache.t3.small"
   num_cache_clusters         = 1
   subnet_group_name          = aws_elasticache_subnet_group.weblate.name
