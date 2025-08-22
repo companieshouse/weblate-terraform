@@ -2,6 +2,19 @@ resource "aws_security_group" "rds_sg" {
   name        = "${var.environment}-${local.whole_service_name}-rds-sg"
   vpc_id      = data.aws_vpc.vpc.id
   description = "Allow weblate ECS tasks to access Postgres"
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block]  # temp. allow all resources in VPC
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 # Ingress rules for each weblate ECS SG into Postgres
