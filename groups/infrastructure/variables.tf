@@ -114,7 +114,7 @@ variable "ecs_configs" {
   }))
   default = {
     "web" = {
-      desired_task_count = 1
+      desired_task_count = 2
       max_task_count     = 2
       required_cpus      = 256
       required_memory    = 1024
