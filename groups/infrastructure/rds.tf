@@ -7,7 +7,7 @@ resource "aws_security_group" "rds_sg" {
 # Ingress rules for each weblate ECS SG into Postgres
 resource "aws_security_group_rule" "rds_from_ecs" {
   for_each = merge(
-    module.ecs_services,
+    module.ecs-services,
     module.ecs-service-celery-beat
   )
   type                     = "ingress"

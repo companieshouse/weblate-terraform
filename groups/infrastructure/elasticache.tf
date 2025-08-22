@@ -7,7 +7,7 @@ resource "aws_security_group" "redis_sg" {
 # Ingress rules for each weblate ECS SG into Redis
 resource "aws_security_group_rule" "redis_from_ecs" {
   for_each = merge(
-    module.ecs_services,
+    module.ecs-services,
     module.ecs-service-celery-beat
   )
   type                     = "ingress"
