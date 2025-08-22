@@ -51,3 +51,8 @@ module "ecs-service" {
   app_environment_filename  = var.config.app_environment_filename
   use_set_environment_files = var.config.use_set_environment_files
 }
+
+# export the output from terraform-modules/aws/ecs/ecs-service/outputs.tf
+output "security_group_id" {
+  value = module.ecs-service.fargate_security_group_id
+}

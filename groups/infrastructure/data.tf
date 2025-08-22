@@ -64,10 +64,10 @@ data "aws_ssm_parameter" "global_secret" {
   name     = each.key
 }
 
-# Collect all the SG of the ECS tagged "weblate-" (will use for both RDS and ElastiCache)
-data "aws_security_groups" "weblate_ecs" {
-  filter {
-    name   = "group-name"
-    values = ["${local.weblate_tag}-*"]
-  }
-}
+# # Collect all the SG of the ECS tagged "weblate-" (will use for both RDS and ElastiCache)
+# data "aws_security_groups" "weblate_ecs" {
+#   filter {
+#     name   = "group-name"
+#     values = ["${local.weblate_tag}-*"]
+#   }
+# }
