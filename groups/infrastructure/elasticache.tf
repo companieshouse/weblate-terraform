@@ -32,7 +32,7 @@ resource "aws_security_group" "redis_sg" {
 # }
 
 resource "aws_elasticache_subnet_group" "weblate" {
-  name       = "${var.environment}-redis-subnets"
+  name       = "${var.environment}-weblate-redis-subnets"
   subnet_ids = local.application_subnet_ids
 }
 

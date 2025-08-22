@@ -31,7 +31,7 @@ resource "aws_security_group" "rds_sg" {
 #   security_group_id        = aws_security_group.rds_sg.id
 # }
 resource "aws_db_subnet_group" "weblate" {
-  name       = "${var.environment}-db-subnets"
+  name       = "${var.environment}-weblate-db-subnets"
   subnet_ids = local.application_subnet_ids
 }
 resource "aws_db_instance" "weblate" {
