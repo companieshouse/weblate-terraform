@@ -1,6 +1,6 @@
 # Scheduled scaling of tasks
 service_autoscale_enabled  = true
 #service_scaledown_schedule = "55 19 * * ? *"
-service_scaledown_schedule = "41 23 * * ? *"
+service_scaledown_schedule = "59 23 * * ? *"
 #service_scaleup_schedule   = "42 22 * * ? *"
 #service_scaleup_schedule   = "5 6 * * ? *"
