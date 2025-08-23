@@ -103,7 +103,8 @@ locals {
     docker_registry   = var.docker_registry
     docker_repo       = "weblate-image"
     container_version = var.weblate_image_version
-    # mount_points      = [{ "sourceVolume" : "tmp", "containerPath" : "/run", "readOnly" : false }]
+    volumes           = [{ "name": "run-tmpfs"}]
+    mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
 
     # Service configuration
     name_prefix = local.name_prefix
