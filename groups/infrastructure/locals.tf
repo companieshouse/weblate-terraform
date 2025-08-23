@@ -103,20 +103,20 @@ locals {
     docker_registry   = var.docker_registry
     docker_repo       = "weblate-image"
     container_version = var.weblate_image_version
-    volumes           = [
-      {
-      "name": "run-tmpfs",
-      "host": null,
-      "dockerVolumeConfiguration": null,
-      "efsVolumeConfiguration": null,
-      "fsxWindowsFileServerVolumeConfiguration": null,
-      "tmpfsConfiguration": {
-        "size": 64,
-        "mode": 1777
-      }
-    }
-    ]
-    mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
+    # volumes           = [
+    #   {
+    #   "name": "run-tmpfs",
+    #   "host": null,
+    #   "dockerVolumeConfiguration": null,
+    #   "efsVolumeConfiguration": null,
+    #   "fsxWindowsFileServerVolumeConfiguration": null,
+    #   "tmpfsConfiguration": {
+    #     "size": 64,
+    #     "mode": 1777
+    #   }
+    # }
+    # ]
+    # mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
 
     # Service configuration
     name_prefix = local.name_prefix
