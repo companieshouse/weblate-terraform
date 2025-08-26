@@ -169,7 +169,7 @@ locals {
     task_environment = local.task_environment
     task_secrets     = local.task_secrets
 
-    task_role_arn          = aws_iam_role.ecs_task_role.arn
+    task_role_arn          = data.aws_iam_role.ecs_task_role.arn
     enable_execute_command = true
   }
 
