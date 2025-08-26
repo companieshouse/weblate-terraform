@@ -75,6 +75,8 @@ locals {
 
   ])
 
+  volume_name = "weblate-data"
+
   # ECS SETTINGS (COMMON)
   ecs_common = {
     use_set_environment_files = var.use_set_environment_files
@@ -103,6 +105,17 @@ locals {
     docker_registry   = var.docker_registry
     docker_repo       = "weblate-image"
     container_version = var.weblate_image_version
+    volumes =  [
+        {
+            "name": local.volume_name,
+            "efsVolumeConfiguration": {
+                "fileSystemId": aws_efs_file_system.weblate.id,
+                "rootDirectory": "/",
+                "transitEncryption": "ENABLED"
+            }
+        }
+    ]
+
     # volumes           = [
     #   {
     #   "name": "run-tmpfs",
@@ -117,6 +130,7 @@ locals {
     # }
     # ]
     # mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
+    mount_points = [{ "sourceVolume" : local.volume_name, "containerPath" : "/app/data", "readOnly" : false }]
 
     # Service configuration
     name_prefix = local.name_prefix

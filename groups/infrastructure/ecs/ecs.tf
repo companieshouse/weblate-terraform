@@ -26,8 +26,8 @@ module "ecs-service" {
   docker_repo       = var.config.docker_repo
   container_version = var.config.container_version
   container_port    = try(var.config.container_port, 9000) # module-ecs default
-  # volumes           = var.config.volumes
-  # mount_points      = var.config.mount_points
+  volumes           = var.config.volumes
+  mount_points      = var.config.mount_points
 
   # Service configuration
   service_name  = var.config.service_name
