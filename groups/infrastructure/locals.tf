@@ -77,7 +77,7 @@ locals {
 
   multi_ecs_volume_data_name  = "weblate-data"  # this is shared across all ECS services
   # single_ecs_volume_run_name  = "run"
-  single_ecs_volume_tmp_name  = "tmp"
+  # single_ecs_volume_tmp_name  = "tmp"
   # single_ecs_volume_cache_name  = "cache"
 
   # ECS SETTINGS (COMMON)
@@ -118,13 +118,13 @@ locals {
                 "rootDirectory": "/",
                 "transitEncryption": "ENABLED"
             }
-        },
+        }
         # {
         #     "name": local.single_ecs_volume_run_name,
         # },
-        {
-            "name": local.single_ecs_volume_tmp_name,
-        },
+        # {
+        #     "name": local.single_ecs_volume_tmp_name,
+        # },
         # {
         #     "name": local.single_ecs_volume_cache_name,
         # }
@@ -145,8 +145,8 @@ locals {
     # ]
     # mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
     mount_points = [
-      { "sourceVolume" : local.multi_ecs_volume_data_name,   "containerPath" : "/app/data", "readOnly" : false },
-      { "sourceVolume" : local.single_ecs_volume_tmp_name,   "containerPath" : "/tmp", "readOnly" : false }
+      { "sourceVolume" : local.multi_ecs_volume_data_name,   "containerPath" : "/app/data", "readOnly" : false }
+      # { "sourceVolume" : local.single_ecs_volume_tmp_name,   "containerPath" : "/tmp", "readOnly" : false }
     #   { "sourceVolume" : local.single_ecs_volume_run_name,   "containerPath" : "/run", "readOnly" : false },
     #   { "sourceVolume" : local.single_ecs_volume_cache_name, "containerPath" : "/app/cache", "readOnly" : false }
     ]
