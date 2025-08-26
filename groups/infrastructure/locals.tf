@@ -168,6 +168,9 @@ locals {
     # Service environment variable and secret configs
     task_environment = local.task_environment
     task_secrets     = local.task_secrets
+
+    task_role_arn          = aws_iam_role.ecs_task_role.arn
+    enable_execute_command = true
   }
 
   # ECS SETTINGS (SERVICE-SPECIFIC)
