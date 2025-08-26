@@ -202,6 +202,14 @@ locals {
     )
   }
 
+  ecs_security_group_ids = flatten([
+    # Collect from the first module loop (actually only 1: "weblate-celery-beat")
+    [for m in module.ecs_services : m.security_group_id],
+
+    # Collect from the second module loop (all the remaining services)
+    [for m in module.ecs-service-celery-beat : m.security_group_id]
+  ])
+
 }
 
 
