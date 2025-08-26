@@ -28,8 +28,8 @@ module "ecs-service" {
   container_port    = try(var.config.container_port, 9000) # module-ecs default
 
   read_only_root_filesystem = var.config.read_only_root_filesystem
-  # volumes           = var.config.volumes
-  # mount_points      = var.config.mount_points
+  volumes                   = var.config.volumes
+  mount_points              = var.config.mount_points
 
   # Service configuration
   service_name  = var.config.service_name
