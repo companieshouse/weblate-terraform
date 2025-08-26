@@ -76,9 +76,9 @@ locals {
   ])
 
   multi_ecs_volume_data_name  = "weblate-data"  # this is shared across all ECS services
-  single_ecs_volume_run_name  = "run"
-  single_ecs_volume_tmp_name  = "tmp"
-  single_ecs_volume_cache_name  = "cache"
+  # single_ecs_volume_run_name  = "run"
+  # single_ecs_volume_tmp_name  = "tmp"
+  # single_ecs_volume_cache_name  = "cache"
 
   # ECS SETTINGS (COMMON)
   ecs_common = {
@@ -108,6 +108,8 @@ locals {
     docker_registry   = var.docker_registry
     docker_repo       = "weblate-image"
     container_version = var.weblate_image_version
+
+    read_only_root_filesystem = false
     volumes =  [
         {
             "name": local.multi_ecs_volume_data_name,
@@ -116,16 +118,17 @@ locals {
                 "rootDirectory": "/",
                 "transitEncryption": "ENABLED"
             }
-        },
-        {
-            "name": local.single_ecs_volume_run_name,
-        },
-        {
-            "name": local.single_ecs_volume_tmp_name,
-        },
-        {
-            "name": local.single_ecs_volume_cache_name,
         }
+        # ,
+        # {
+        #     "name": local.single_ecs_volume_run_name,
+        # },
+        # {
+        #     "name": local.single_ecs_volume_tmp_name,
+        # },
+        # {
+        #     "name": local.single_ecs_volume_cache_name,
+        # }
     ]
 
     # volumes           = [
@@ -142,12 +145,12 @@ locals {
     # }
     # ]
     # mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
-    mount_points = [
-      { "sourceVolume" : local.multi_ecs_volume_data_name,   "containerPath" : "/app/data", "readOnly" : false },
-      { "sourceVolume" : local.single_ecs_volume_run_name,   "containerPath" : "/run", "readOnly" : false },
-      { "sourceVolume" : local.single_ecs_volume_tmp_name,   "containerPath" : "/tmp", "readOnly" : false },
-      { "sourceVolume" : local.single_ecs_volume_cache_name, "containerPath" : "/app/cache", "readOnly" : false }
-    ]
+    # mount_points = [
+    #   { "sourceVolume" : local.multi_ecs_volume_data_name,   "containerPath" : "/app/data", "readOnly" : false },
+    #   { "sourceVolume" : local.single_ecs_volume_run_name,   "containerPath" : "/run", "readOnly" : false },
+    #   { "sourceVolume" : local.single_ecs_volume_tmp_name,   "containerPath" : "/tmp", "readOnly" : false },
+    #   { "sourceVolume" : local.single_ecs_volume_cache_name, "containerPath" : "/app/cache", "readOnly" : false }
+    # ]
 
     # Service configuration
     name_prefix = local.name_prefix
