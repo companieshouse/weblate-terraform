@@ -68,6 +68,7 @@ locals {
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { name : "DUMMY_VALUE", value : "14" },
     { name : "WEBLATE_DEBUG", value : "1" },
+    { name : "USE_X_FORWARDED_HOST", value : "1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
     { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
