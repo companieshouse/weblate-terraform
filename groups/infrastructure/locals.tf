@@ -76,9 +76,6 @@ locals {
   ])
 
   multi_ecs_volume_data_name  = "weblate-data"  # this is shared across all ECS services
-  # single_ecs_volume_run_name  = "run"
-  # single_ecs_volume_tmp_name  = "tmp"
-  # single_ecs_volume_cache_name  = "cache"
 
   # ECS SETTINGS (COMMON)
   ecs_common = {
@@ -119,36 +116,10 @@ locals {
                 "transitEncryption": "ENABLED"
             }
         }
-        # {
-        #     "name": local.single_ecs_volume_run_name,
-        # },
-        # {
-        #     "name": local.single_ecs_volume_tmp_name,
-        # },
-        # {
-        #     "name": local.single_ecs_volume_cache_name,
-        # }
     ]
 
-    # volumes           = [
-    #   {
-    #   "name": "run-tmpfs",
-    #   "host": null,
-    #   "dockerVolumeConfiguration": null,
-    #   "efsVolumeConfiguration": null,
-    #   "fsxWindowsFileServerVolumeConfiguration": null,
-    #   "tmpfsConfiguration": {
-    #     "size": 64,
-    #     "mode": 1777
-    #   }
-    # }
-    # ]
-    # mount_points      = [{ "sourceVolume" : "run-tmpfs", "containerPath" : "/run", "readOnly" : false }]
     mount_points = [
       { "sourceVolume" : local.multi_ecs_volume_data_name,   "containerPath" : "/app/data", "readOnly" : false }
-      # { "sourceVolume" : local.single_ecs_volume_tmp_name,   "containerPath" : "/tmp", "readOnly" : false }
-    #   { "sourceVolume" : local.single_ecs_volume_run_name,   "containerPath" : "/run", "readOnly" : false },
-    #   { "sourceVolume" : local.single_ecs_volume_cache_name, "containerPath" : "/app/cache", "readOnly" : false }
     ]
 
     # Service configuration
@@ -190,7 +161,7 @@ locals {
       lb_listener_rule_priority = 35
       lb_listener_paths         = ["/weblate", "/weblate/*"]
 
-      healthcheck_path                  = "/weblate/healthz"
+      healthcheck_path                  = "/healthz"
       health_check_grace_period_seconds = 300
       healthcheck_healthy_threshold     = "2"
     },
