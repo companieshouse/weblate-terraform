@@ -69,6 +69,7 @@ locals {
     { name : "DUMMY_VALUE", value : "15" },
     { name : "WEBLATE_DEBUG", value : "1" },
     { name : "USE_X_FORWARDED_HOST", value : "1" },
+    { name : "WEBLATE_FORCE_SCRIPT_NAME", value : "/weblate" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
     { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
