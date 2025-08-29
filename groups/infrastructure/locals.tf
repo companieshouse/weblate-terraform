@@ -66,9 +66,9 @@ locals {
 
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
-    { name : "DUMMY_VALUE", value : "24" },
+    { name : "DUMMY_VALUE", value : "25" },
     { name : "WEBLATE_DEBUG", value : "1" },
-    { name : "URL_PREFIX", value : "/weblate" },
+    { name : "URL_PREFIX", value : "/weblate1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
     { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
