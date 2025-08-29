@@ -161,7 +161,7 @@ locals {
       lb_listener_rule_priority = 35
       lb_listener_paths         = ["/weblate", "/weblate/*"]
 
-      healthcheck_path                  = "/weblate/healthz/"
+      healthcheck_path                  = "/healthz/"
       health_check_grace_period_seconds = 300
       healthcheck_healthy_threshold     = "2"
     },
