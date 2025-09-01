@@ -29,8 +29,6 @@ locals {
     k => v if !contains([
       "psql_master_user",
       "psql_master_password",
-      "weblate_admin_name",
-      "weblate_admin_password"
     ], k)
   }
 
