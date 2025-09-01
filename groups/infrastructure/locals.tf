@@ -66,7 +66,7 @@ locals {
 
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
-    { name : "DUMMY_VALUE", value : "27" },
+    { name : "DUMMY_VALUE", value : "28" },
     { name : "WEBLATE_DEBUG", value : "1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
     { name : "WEBLATE_EMAIL_USE_TLS", value : "False" },
