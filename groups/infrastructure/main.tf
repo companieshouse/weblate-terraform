@@ -20,7 +20,7 @@ module "secrets" {
   name_prefix = "${local.whole_service_name}-${var.environment}"
   environment = var.environment
   kms_key_id  = data.aws_kms_key.kms_key.id
-  secrets     = nonsensitive(local.service_secrets)
+  secrets     = nonsensitive(local.service_secrets_sanitised)
 }
 
 # run 1st: celery-beat only (which should start before the other ECS services)
