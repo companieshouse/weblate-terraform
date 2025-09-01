@@ -69,6 +69,7 @@ locals {
     { name : "DUMMY_VALUE", value : "27" },
     { name : "WEBLATE_DEBUG", value : "1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
+    { name : "WEBLATE_EMAIL_USE_TLS", value : "False" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
     { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
     { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address }
