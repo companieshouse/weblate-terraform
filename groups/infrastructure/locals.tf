@@ -80,7 +80,8 @@ locals {
     { name : "WEBLATE_EMAIL_USE_TLS", value : "False" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
     { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
-    { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address }
+    { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address },
+    { name : "WEBLATE_EMAIL_HOST", value : "localhost"}
   ])
 
   multi_ecs_volume_data_name  = "weblate-data"  # this is shared across all ECS services
