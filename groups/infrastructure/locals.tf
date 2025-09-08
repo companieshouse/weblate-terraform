@@ -20,6 +20,8 @@ locals {
   db_master_username = local.service_secrets["psql_master_user"]
   db_master_password = local.service_secrets["psql_master_password"]
 
+  s3_bucket_name = "${var.environment}-weblate-media"
+
   # Secrets
   stack_secrets   = jsondecode(data.vault_generic_secret.stack_secrets.data_json)
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
@@ -75,6 +77,9 @@ locals {
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { name : "DUMMY_VALUE", value : "28" },
+    { name : "WEBLATE_DEFAULT_STORAGE", value : "storages.backends.s3boto3.S3Boto3Storage" },
+    { name : "AWS_STORAGE_BUCKET_NAME", value : "${local.s3_bucket_name}" },
+    { name : "AWS_S3_REGION_NAME", value : var.aws_region },
     { name : "WEBLATE_DEBUG", value : "1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
     { name : "WEBLATE_EMAIL_USE_TLS", value : "False" },
