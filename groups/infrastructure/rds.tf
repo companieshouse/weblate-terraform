@@ -6,7 +6,7 @@ resource "aws_security_group" "rds_sg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = concat([data.aws_vpc.vpc.cidr_block], local.ch_development_concourse_cidrs)
+    cidr_blocks = concat([data.aws_vpc.vpc.cidr_block, "10.44.0.0/16"], local.ch_development_concourse_cidrs)
     # Allows VPC and any extra admin CIDRs (e.g., Concourse IPs)
   }
 

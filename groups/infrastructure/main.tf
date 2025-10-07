@@ -39,7 +39,16 @@ module "ecs-service-celery-beat" {
   }
 
   config     = each.value
-  depends_on = [module.secrets]
+  depends_on = [
+    module.secrets,
+    aws_db_instance.weblate,
+    postgresql_role.weblate_user,
+    postgresql_schema.public_schema,
+    postgresql_grant.weblate_schema_usage,
+    postgresql_grant.weblate_tables,
+    postgresql_grant.weblate_sequences,
+    postgresql_default_privileges.weblate_defaults
+  ]
 }
 
 
