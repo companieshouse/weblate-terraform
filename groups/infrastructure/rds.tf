@@ -51,3 +51,61 @@ resource "aws_db_instance" "weblate" {
   backup_retention_period = 7
   publicly_accessible     = false
 }
+
+# PostgreSQL provider — connects directly to RDS
+provider "postgresql" {
+  host            = aws_db_instance.weblate.address
+  port            = 5432
+  username        = local.db_master_username
+  password        = local.db_master_password
+  sslmode         = "require"
+}
+
+# Create Weblate DB user
+resource "postgresql_role" "weblate_user" {
+  name     = local.db_username
+  login    = true
+  password = local.db_password
+}
+
+# Schema ownership
+resource "postgresql_schema" "public_schema" {
+  name  = "public"
+  owner = postgresql_role.weblate_user.name
+  database = "${var.postgres_db}"
+}
+
+# Privileges on schema, tables, sequences, functions
+resource "postgresql_grant" "weblate_schema_usage" {
+  database    = "${var.postgres_db}"
+  role        = postgresql_role.weblate_user.name
+  schema      = "public"
+  object_type = "schema"
+  privileges  = ["USAGE"]
+}
+
+resource "postgresql_grant" "weblate_tables" {
+  database    = "${var.postgres_db}"
+  role        = postgresql_role.weblate_user.name
+  schema      = "public"
+  object_type = "table"
+  privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE"]
+}
+
+resource "postgresql_grant" "weblate_sequences" {
+  database    = "${var.postgres_db}"
+  role        = postgresql_role.weblate_user.name
+  schema      = "public"
+  object_type = "sequence"
+  privileges  = ["USAGE", "SELECT", "UPDATE"]
+}
+
+# Default privileges for future tables/sequences/functions
+resource "postgresql_default_privileges" "weblate_defaults" {
+  database    = "${var.postgres_db}"
+  role        = postgresql_role.weblate_user.name
+  schema      = "public"
+  owner       = postgresql_role.weblate_user.name
+  object_type = "table"
+  privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE"]
+}
