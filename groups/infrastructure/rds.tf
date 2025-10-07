@@ -60,6 +60,7 @@ provider "postgresql" {
   username        = local.db_master_username
   password        = local.db_master_password
   sslmode         = "require"
+  superuser       = false
 }
 
 # Create Weblate DB user
