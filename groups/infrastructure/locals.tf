@@ -20,7 +20,7 @@ locals {
   db_master_username = local.service_secrets["psql_master_user"]
   db_master_password = local.service_secrets["psql_master_password"]
   db_username        = local.service_secrets["postgres_user"]
-  db_password        = local.service_secrets["ppostgres_password"]
+  db_password        = local.service_secrets["postgres_password"]
 
   s3_bucket_name = "${var.environment}-weblate-media"
 
