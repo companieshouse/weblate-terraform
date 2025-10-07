@@ -76,7 +76,7 @@ locals {
 
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
-    { name : "DUMMY_VALUE", value : "28" },
+    { name : "DUMMY_VALUE", value : "29" },
     { name : "AWS_STORAGE_BUCKET_NAME", value : "${local.s3_bucket_name}" },
     { name : "AWS_S3_REGION_NAME", value : var.aws_region },
     { name : "WEBLATE_DEBUG", value : "1" },
