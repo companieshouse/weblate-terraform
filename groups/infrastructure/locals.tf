@@ -9,6 +9,8 @@ locals {
   stack_secrets_path   = "applications/${var.aws_profile}/${var.environment}/${local.stack_name}-stack"
   service_secrets_path = "${local.stack_secrets_path}/weblate"
 
+  ch_development_concourse_cidrs = values(data.vault_generic_secret.ch_development_concourse_cidrs.data)
+
   kms_alias = "alias/${var.aws_profile}/environment-services-kms"
   lb_name   = "alb-randd-rand"
 

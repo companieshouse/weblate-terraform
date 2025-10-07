@@ -10,6 +10,10 @@ data "vault_generic_secret" "service_secrets" {
   path = local.service_secrets_path
 }
 
+data "vault_generic_secret" "ch_development_concourse_cidrs" {
+  path = "/aws-accounts/network/ch-development-private-management-cidrs"
+}
+
 data "aws_vpc" "vpc" {
   filter {
     name   = "tag:Name"
