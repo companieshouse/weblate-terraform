@@ -68,6 +68,9 @@ resource "postgresql_role" "weblate_user" {
   name     = local.db_username
   login    = true
   password = local.db_password
+  depends_on = [
+    aws_db_instance.weblate
+  ]
 }
 
 # Schema ownership
