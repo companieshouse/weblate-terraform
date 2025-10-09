@@ -1,6 +1,6 @@
 // This triggers the 2nd phase (to config the RDS instance)
 module "db_config" {
-  source = "./db-config"
+  source = "./module-db-config"
   config = {
     rds_identifier     = local.rds_identifier
     db_name            = var.postgres_db

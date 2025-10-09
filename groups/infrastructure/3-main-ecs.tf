@@ -9,7 +9,7 @@ module "secrets" {
 
 # run 1st: celery-beat only (which should start before the other ECS services)
 module "ecs-service-celery-beat" {
-  source = "./ecs"
+  source = "./module-ecs"
 
   # the loop will process only 1 iteration (celery-beat)
   for_each = {

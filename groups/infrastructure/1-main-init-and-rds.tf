@@ -1,6 +1,6 @@
 // This triggers the 1st phase (to create some first resources, mainly RDS)
 module "init_and_rds" {
-  source = "./init-and-rds"
+  source = "./module-init-and-rds"
   config = {
     environment                = var.environment
     whole_service_name         = local.whole_service_name

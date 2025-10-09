@@ -1,6 +1,6 @@
 // This triggers the 3rd phase (to deploy remaining resources, mainly ECS)
 module "post_db_config" {
-  source = "./post-db-config"
+  source = "./module-post-db-config"
   config = {
     name_prefix               = local.name_prefix
     weblate_tag               = local.weblate_tag

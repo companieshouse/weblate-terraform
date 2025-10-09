@@ -1,6 +1,6 @@
 // This is a common 'main' code used by more phases (mainly to source secrets from vault)
 module "common_secrets" {
-  source = "./common-secrets"
+  source = "./module-secrets"
   config = {
     environment          = var.environment
     ssm_version_prefix   = var.ssm_version_prefix
