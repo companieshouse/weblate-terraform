@@ -28,7 +28,7 @@ variable "ssm_version_prefix" {
 }
 
 variable "postgres_db" {
-  type = string
+  type        = string
   description = "name of the postgres database"
-  default = "weblate"
+  default     = "weblate"
 }

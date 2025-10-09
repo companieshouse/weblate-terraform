@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "weblate_media" {
-  bucket = "${var.config.s3_bucket_name}"
+  bucket = var.config.s3_bucket_name
   tags   = { Name = "${var.config.weblate_tag}" }
 }
 

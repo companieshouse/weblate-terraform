@@ -6,7 +6,7 @@ resource "aws_security_group" "redis_sg" {
     from_port   = 6379
     to_port     = 6379
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.vpc.cidr_block]  # temp. allow all resources in VPC
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block] # temp. allow all resources in VPC
   }
 
   egress {

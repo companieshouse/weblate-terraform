@@ -17,7 +17,7 @@ locals {
     { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address }
   ])
 
-  multi_ecs_volume_data_name  = "weblate-data"  # this is shared across all ECS services
+  multi_ecs_volume_data_name = "weblate-data" # this is shared across all ECS services
 
   # ECS SETTINGS (COMMON)
   ecs_common = {
@@ -49,19 +49,19 @@ locals {
     container_version = var.weblate_image_version
 
     read_only_root_filesystem = false
-    volumes =  [
-        {
-            "name": local.multi_ecs_volume_data_name,
-            "efsVolumeConfiguration": {
-                "fileSystemId": aws_efs_file_system.weblate.id,
-                "rootDirectory": "/",
-                "transitEncryption": "ENABLED"
-            }
+    volumes = [
+      {
+        "name" : local.multi_ecs_volume_data_name,
+        "efsVolumeConfiguration" : {
+          "fileSystemId" : aws_efs_file_system.weblate.id,
+          "rootDirectory" : "/",
+          "transitEncryption" : "ENABLED"
         }
+      }
     ]
 
     mount_points = [
-      { "sourceVolume" : local.multi_ecs_volume_data_name,   "containerPath" : "/app/data", "readOnly" : false }
+      { "sourceVolume" : local.multi_ecs_volume_data_name, "containerPath" : "/app/data", "readOnly" : false }
     ]
 
     # Service configuration

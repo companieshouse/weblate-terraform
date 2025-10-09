@@ -15,6 +15,6 @@ module "init_and_rds" {
     db_master_username = module.common_secrets.db_master_username
     db_master_password = module.common_secrets.db_master_password
     /* elasticache */
-    elasticache_id     = local.elasticache_id
+    elasticache_id = local.elasticache_id
   }
 }

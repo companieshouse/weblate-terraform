@@ -1,7 +1,7 @@
 resource "aws_efs_file_system" "weblate" {
-  creation_token = "weblate-efs"
+  creation_token   = "weblate-efs"
   performance_mode = "generalPurpose"
-  throughput_mode = "bursting"
+  throughput_mode  = "bursting"
   lifecycle_policy {
     transition_to_ia = "AFTER_30_DAYS"
   }
@@ -35,8 +35,8 @@ resource "aws_security_group" "efs" {
 
 
 resource "aws_efs_mount_target" "weblate" {
-  for_each       = { for subnet_id in var.config.application_subnet_ids : subnet_id => subnet_id }
-  file_system_id = aws_efs_file_system.weblate.id
-  subnet_id      = each.key
+  for_each        = { for subnet_id in var.config.application_subnet_ids : subnet_id => subnet_id }
+  file_system_id  = aws_efs_file_system.weblate.id
+  subnet_id       = each.key
   security_groups = [aws_security_group.efs.id]
 }
