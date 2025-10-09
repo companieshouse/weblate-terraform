@@ -1,92 +1,19 @@
-# Define all hardcoded local variable and local variables looked up from data resources
 locals {
-  stack_name         = "rand-pocs" # this must match the stack name the service deploys into
-  name_prefix        = "${local.stack_name}-${var.environment}"
-  global_prefix      = "global-${var.environment}"
-  whole_service_name = "weblate"
-  weblate_tag        = "${var.environment}-${local.whole_service_name}"
-
-  stack_secrets_path   = "applications/${var.aws_profile}/${var.environment}/${local.stack_name}-stack"
-  service_secrets_path = "${local.stack_secrets_path}/weblate"
-
-  ch_development_concourse_cidrs = values(data.vault_generic_secret.ch_development_concourse_cidrs.data)
-
-  kms_alias = "alias/${var.aws_profile}/environment-services-kms"
-  lb_name   = "alb-randd-rand"
-
-  vpc_name                   = local.stack_secrets["vpc_name"]
-  application_subnet_ids     = data.aws_subnets.application.ids
-  application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
-
-  db_name            = "${var.environment}-${local.whole_service_name}-postgresdb"
-  db_master_username = local.service_secrets["psql_master_user"]
-  db_master_password = local.service_secrets["psql_master_password"]
-  db_username        = local.service_secrets["postgres_user"]
-  db_password        = local.service_secrets["postgres_password"]
-
-  s3_bucket_name = "${var.environment}-weblate-media"
-
-  # Secrets
-  stack_secrets   = jsondecode(data.vault_generic_secret.stack_secrets.data_json)
-  service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
-
-  service_secrets_sanitised = {
-    for k, v in local.service_secrets :
-    k => v if !contains([
-      "psql_master_user",
-      "psql_master_password",
-    ], k)
-  }
-
-  # GLOBAL: create a map of secret name => secret arn to pass into ecs service module
-  global_secrets_arn_map = {
-    for sec in data.aws_ssm_parameter.global_secret :
-    trimprefix(sec.name, "/${local.global_prefix}/") => sec.arn
-  }
-
-  # GLOBAL: create a list of secret name => secret arn to pass into ecs service module
-  global_secret_list = flatten([for key, value in local.global_secrets_arn_map :
-    { "name" = upper(key), "valueFrom" = value }
-  ])
-
-  # SERVICE: create a map of secret name => secret arn to pass into ecs service module
-  service_secrets_arn_map = {
-    for sec in module.secrets.secrets :
-    trimprefix(sec.name, "/${local.whole_service_name}-${var.environment}/") => sec.arn
-  }
-
-  # SERVICE: create a list of secret name => secret arn to pass into ecs service module
-  service_secret_list = flatten([for key, value in local.service_secrets_arn_map :
-    { "name" = upper(key), "valueFrom" = value }
-  ])
 
   # TASK SECRET: GLOBAL SECRET + SERVICE SECRET
-  task_secrets = concat(local.global_secret_list, local.service_secret_list, [
+  task_secrets = concat(module.common_secrets.global_secret_list, module.common_secrets.service_secret_list, [
   ])
 
-  # GLOBAL: create a map of secret name and secret version to pass into ecs service module
-  ssm_global_version_map = [
-    for sec in data.aws_ssm_parameter.global_secret : {
-      name = "GLOBAL_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
-    }
-  ]
-
-  # SERVICE: create a map of secret name and secret version to pass into ecs service module
-  ssm_service_version_map = [
-    for sec in module.secrets.secrets : {
-      name = "${replace(upper(local.whole_service_name), "-", "_")}_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
-    }
-  ]
-
   # TASK ENVIRONMENT: GLOBAL SECRET Version + SERVICE SECRET Version
-  task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
+  task_environment = concat(module.common_secrets.ssm_global_version_map, module.common_secrets.ssm_service_version_map, [
     { name : "DUMMY_VALUE", value : "29" },
-    { name : "AWS_STORAGE_BUCKET_NAME", value : "${local.s3_bucket_name}" },
+    { name : "AWS_STORAGE_BUCKET_NAME", value : local.s3_bucket_name },
     { name : "AWS_S3_REGION_NAME", value : var.aws_region },
     { name : "WEBLATE_DEBUG", value : "1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
     { name : "POSTGRES_HOST", value : aws_db_instance.weblate.address },
-    { name : "POSTGRES_DB", value : aws_db_instance.weblate.db_name },
+    { name : "POSTGRES_DB", value : var.postgres_db },
+    { name : "POSTGRES_PORT", value : "5432" },
     { name : "REDIS_HOST", value : aws_elasticache_replication_group.weblate.primary_endpoint_address }
   ])
 
@@ -233,5 +160,3 @@ locals {
   ])
 
 }
-
-

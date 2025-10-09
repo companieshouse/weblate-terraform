@@ -1,5 +1,5 @@
 resource "aws_security_group" "redis_sg" {
-  name        = "${var.environment}-${local.whole_service_name}-redis-sg"
+  name        = "${var.config.environment}-${var.config.whole_service_name}-redis-sg"
   description = "Allow weblate ECS tasks to access Redis"
   vpc_id      = data.aws_vpc.vpc.id
   ingress {
@@ -32,13 +32,13 @@ resource "aws_security_group" "redis_sg" {
 # }
 
 resource "aws_elasticache_subnet_group" "weblate" {
-  name       = "${var.environment}-weblate-redis-subnets"
-  subnet_ids = local.application_subnet_ids
+  name       = "${var.config.environment}-weblate-redis-subnets"
+  subnet_ids = var.config
 }
 
 resource "aws_elasticache_replication_group" "weblate" {
   description                = "Weblate Redis"
-  replication_group_id       = "${var.environment}-${local.whole_service_name}"
+  replication_group_id       = var.config.elasticache_id
   automatic_failover_enabled = false
   node_type                  = "cache.t3.small"
   num_cache_clusters         = 1

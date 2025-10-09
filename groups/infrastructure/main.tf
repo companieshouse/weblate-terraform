@@ -1,93 +1,16 @@
-terraform {
-  backend "s3" {
+// This is a common 'main' code used by more phases (mainly to source secrets from vault)
+module "common_secrets" {
+  source = "./common-secrets"
+  config = {
+    environment          = var.environment
+    ssm_version_prefix   = var.ssm_version_prefix
+
+    name_prefix          = local.name_prefix
+    global_prefix        = local.global_prefix
+    whole_service_name   = local.whole_service_name
+
+    stack_secrets_path   = local.stack_secrets_path
+    service_secrets_path = local.service_secrets_path
+    kms_alias            = local.kms_alias
   }
-  required_version = "~> 1.3.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.54.0"
-    }
-    vault = {
-      source  = "hashicorp/vault"
-      version = "~> 3.18.0"
-    }
-    postgresql = {
-      source  = "cyrilgdn/postgresql"
-      version = "~> 1.26.0"
-    }
-  }
-}
-
-module "secrets" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.340"
-
-  name_prefix = "${local.whole_service_name}-${var.environment}"
-  environment = var.environment
-  kms_key_id  = data.aws_kms_key.kms_key.id
-  secrets     = nonsensitive(local.service_secrets_sanitised)
-}
-
-# run 1st: celery-beat only (which should start before the other ECS services)
-module "ecs-service-celery-beat" {
-  source = "./ecs"
-
-  # the loop will process only 1 iteration (celery-beat)
-  for_each = {
-    for name, cfg in local.ecs_service_configs :
-    name => cfg
-    if cfg.service_name == "weblate-celery-beat"
-  }
-
-  config     = each.value
-  depends_on = [
-    module.secrets,
-    aws_db_instance.weblate,
-    postgresql_role.weblate_user,
-    postgresql_schema.public_schema,
-    postgresql_grant.weblate_schema_usage,
-    postgresql_grant.weblate_tables,
-    postgresql_grant.weblate_sequences,
-    postgresql_default_privileges.weblate_defaults
-  ]
-}
-
-
-# run 2nd: all others ECS
-module "ecs-services" {
-  source = "./ecs"
-
-  # the loop will process all except 1 (celery-beat)
-  for_each = {
-    for name, cfg in local.ecs_service_configs :
-    name => cfg
-    if cfg.service_name != "weblate-celery-beat"
-  }
-
-  config     = each.value
-  depends_on = [module.secrets, module.ecs-service-celery-beat] # <-- here the dependency which will run this after
-}
-
-resource "aws_iam_role" "ecs_task_role" {
-  name = "weblate-tasks-exec-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
-      Principal = {
-        Service = "ecs-tasks.amazonaws.com"
-      }
-    }]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_ssm" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = aws_iam_policy.weblate_s3_policy.arn
 }

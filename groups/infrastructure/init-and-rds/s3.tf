@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "weblate_media" {
-  bucket = "${local.s3_bucket_name}"
-  tags   = { Name = "${local.weblate_tag}" }
+  bucket = "${var.config.s3_bucket_name}"
+  tags   = { Name = "${var.config.weblate_tag}" }
 }
 
 # Block public access

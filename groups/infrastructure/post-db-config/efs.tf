@@ -6,7 +6,7 @@ resource "aws_efs_file_system" "weblate" {
     transition_to_ia = "AFTER_30_DAYS"
   }
   tags = {
-    Name = "${local.weblate_tag}-efs"
+    Name = "${var.config.weblate_tag}-efs"
   }
 }
 
@@ -16,7 +16,7 @@ resource "aws_security_group" "efs" {
   description = "EFS security group"
 
   dynamic "ingress" {
-    for_each = toset(local.ecs_security_group_ids)
+    for_each = toset(var.config.ecs_security_group_ids)
     content {
       from_port       = 2049
       to_port         = 2049
@@ -35,7 +35,7 @@ resource "aws_security_group" "efs" {
 
 
 resource "aws_efs_mount_target" "weblate" {
-  for_each       = { for subnet_id in local.application_subnet_ids : subnet_id => subnet_id }
+  for_each       = { for subnet_id in var.config.application_subnet_ids : subnet_id => subnet_id }
   file_system_id = aws_efs_file_system.weblate.id
   subnet_id      = each.key
   security_groups = [aws_security_group.efs.id]
