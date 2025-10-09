@@ -6,6 +6,7 @@ module "init_and_rds" {
     whole_service_name         = local.whole_service_name
     weblate_tag                = local.weblate_tag
     application_subnet_pattern = local.application_subnet_pattern
+    application_subnet_ids     = local.application_subnet_ids
     /* s3 */
     s3_bucket_name = local.s3_bucket_name
     /* rds */
