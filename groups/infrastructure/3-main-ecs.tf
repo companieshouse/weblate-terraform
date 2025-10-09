@@ -25,7 +25,7 @@ module "ecs-service-celery-beat" {
 
 # run 2nd: all others ECS
 module "ecs-services" {
-  source = "./ecs"
+  source = "./module-ecs"
 
   # the loop will process all except 1 (celery-beat)
   for_each = {
