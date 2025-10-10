@@ -1,8 +1,9 @@
 
+#Get VPC
 data "aws_vpc" "vpc" {
   filter {
     name   = "tag:Name"
-    values = [var.config.vpc_name]
+    values = [local.vpc_name]
   }
 }
 
@@ -10,6 +11,6 @@ data "aws_vpc" "vpc" {
 data "aws_subnets" "application" {
   filter {
     name   = "tag:Name"
-    values = [var.config.application_subnet_pattern]
+    values = [local.application_subnet_pattern]
   }
 }
