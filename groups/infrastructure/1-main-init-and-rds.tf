@@ -5,6 +5,9 @@ module "init_and_rds" {
     environment                = var.environment
     whole_service_name         = local.whole_service_name
     weblate_tag                = local.weblate_tag
+    vpc_id                     = data.aws_vpc.vpc.id
+    vpc_cidr_block             = data.aws_vpc.vpc.cidr_block
+
     application_subnet_pattern = local.application_subnet_pattern
     application_subnet_ids     = local.application_subnet_ids
     /* s3 */

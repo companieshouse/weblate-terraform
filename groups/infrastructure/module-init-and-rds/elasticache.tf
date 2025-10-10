@@ -1,12 +1,12 @@
 resource "aws_security_group" "redis_sg" {
   name        = "${var.config.environment}-${var.config.whole_service_name}-redis-sg"
   description = "Allow weblate ECS tasks to access Redis"
-  vpc_id      = data.aws_vpc.vpc.id
+  vpc_id      = var.config.vpc_id
   ingress {
     from_port   = 6379
     to_port     = 6379
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.vpc.cidr_block] # temp. allow all resources in VPC
+    cidr_blocks = [var.config.vpc_cidr_block] # <-- allow from whole VPC
   }
 
   egress {

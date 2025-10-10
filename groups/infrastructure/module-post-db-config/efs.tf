@@ -12,7 +12,7 @@ resource "aws_efs_file_system" "weblate" {
 
 resource "aws_security_group" "efs" {
   name        = "weblate_efs_sg"
-  vpc_id      = data.aws_vpc.vpc.id
+  vpc_id      = var.config.vpc_id
   description = "EFS security group"
 
   dynamic "ingress" {
