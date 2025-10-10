@@ -9,7 +9,7 @@ terraform {
 }
 # PostgreSQL provider — connects directly to RDS
 provider "postgresql" {
-  host      = aws_db_instance.weblate.address
+  host      = data.aws_db_instance.weblate.address
   port      = 5432
   username  = var.config.db_master_username
   password  = var.config.db_master_password
