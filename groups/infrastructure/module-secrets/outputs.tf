@@ -7,6 +7,10 @@ output "vpc_name" {
 output "application_subnet_pattern" {
   value     = local.stack_secrets["application_subnet_pattern"]
 }
+output "concourse_cidrs" {
+  value     = data.vault_generic_secret.ch_development_concourse_cidrs.data
+}
+
 # ------------------------------------------------------------------------------
 # PostgreSQL Outputs
 # ------------------------------------------------------------------------------
