@@ -1,3 +1,12 @@
+# this duplicated provider setting in a submodule is one of the many terraform limitations
+terraform {
+  required_providers {
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.26.0"
+    }
+  }
+}
 # PostgreSQL provider — connects directly to RDS
 provider "postgresql" {
   host      = aws_db_instance.weblate.address
