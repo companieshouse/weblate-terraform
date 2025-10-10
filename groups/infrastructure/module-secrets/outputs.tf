@@ -1,4 +1,13 @@
 # ------------------------------------------------------------------------------
+# Infra Outputs
+# ------------------------------------------------------------------------------
+output "vpc_name" {
+  value     = local.stack_secrets["vpc_name"]
+}
+output "application_subnet_pattern" {
+  value     = local.stack_secrets["application_subnet_pattern"]
+}
+# ------------------------------------------------------------------------------
 # PostgreSQL Outputs
 # ------------------------------------------------------------------------------
 output "db_master_username" {
@@ -21,30 +30,3 @@ output "db_password" {
   sensitive = true
 }
 
-# ------------------------------------------------------------------------------
-# Stack and service secrets Outputs
-# ------------------------------------------------------------------------------
-output "global_secret_list" {
-  value     = local.global_secret_list
-  sensitive = true
-}
-
-output "service_secret_list" {
-  value     = local.service_secret_list
-  sensitive = true
-}
-
-output "service_secrets_sanitised" {
-  value     = local.service_secrets_sanitised
-  sensitive = true
-}
-
-output "ssm_global_version_map" {
-  value     = local.ssm_global_version_map
-  sensitive = true
-}
-
-output "ssm_service_version_map" {
-  value     = local.ssm_service_version_map
-  sensitive = true
-}

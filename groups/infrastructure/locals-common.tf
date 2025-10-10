@@ -13,9 +13,9 @@ locals {
   kms_alias = "alias/${var.aws_profile}/environment-services-kms"
   lb_name   = "alb-randd-rand"
 
-  vpc_name                   = local.stack_secrets["vpc_name"]
+  vpc_name                   = module.common_secrets.vpc_name
   application_subnet_ids     = data.aws_subnets.application.ids
-  application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
+  application_subnet_pattern = module.common_secrets.application_subnet_pattern
 
   s3_bucket_name = "${var.environment}-weblate-media"
 }
