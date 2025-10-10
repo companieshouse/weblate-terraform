@@ -1,6 +1,6 @@
 locals {
   service_secrets_sanitised = {
-    for k, v in module.module-secrets.service_secrets :
+    for k, v in module.common_secrets.service_secrets :
     k => v if !contains([
       "psql_master_user",
       "psql_master_password",
@@ -9,7 +9,7 @@ locals {
 
   # GLOBAL: create a map of secret name => secret arn to pass into ecs service module
   global_secrets_arn_map = {
-    for sec in data.aws_ssm_parameter.global_secret :
+    for sec in module.common_secrets.global_secret_list :
     trimprefix(sec.name, "/${var.config.global_prefix}/") => sec.arn
   }
 
@@ -31,7 +31,7 @@ locals {
 
   # GLOBAL: create a map of secret name and secret version to pass into ecs service module
   ssm_global_version_map = [
-    for sec in data.aws_ssm_parameter.global_secret : {
+    for sec in module.common_secrets.global_secret_list : {
       name = "GLOBAL_${var.config.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
     }
   ]
