@@ -13,7 +13,7 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
 }
 
 resource "aws_iam_policy" "weblate_s3_policy" {
-  name        = "${var.config.weblate_tag}-s3-policy"
+  name        = var.config.s3_policy_name
   description = "Allow Weblate ECS tasks to access S3 bucket"
 
   policy = jsonencode({

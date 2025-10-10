@@ -14,11 +14,20 @@ output "concourse_cidrs" {
 output "global_secret_list" {
   value     = data.aws_ssm_parameter.global_secret
   sensitive = true
-
 }
+output "service_secrets_sanitised" {
+  value     = local.service_secrets_sanitised
+  sensitive = true
+}
+
+output "kms_key_id" {
+  value = data.aws_kms_key.kms_key.id
+}
+
 # ------------------------------------------------------------------------------
 # PostgreSQL Outputs
 # ------------------------------------------------------------------------------
+
 output "db_master_username" {
   value     = local.service_secrets["psql_master_user"]
   sensitive = true

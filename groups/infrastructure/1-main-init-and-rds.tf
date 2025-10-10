@@ -12,6 +12,7 @@ module "init_and_rds" {
     application_subnet_ids     = local.application_subnet_ids
     /* s3 */
     s3_bucket_name = local.s3_bucket_name
+    s3_policy_name = local.s3_policy_name
     /* rds */
     db_name            = var.postgres_db
     rds_identifier     = local.rds_identifier

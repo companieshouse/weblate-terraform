@@ -6,6 +6,7 @@ locals {
   weblate_tag        = "${var.environment}-${local.whole_service_name}"
   rds_identifier     = "${local.weblate_tag}-postgresdb"
   elasticache_id     = "${local.weblate_tag}-elasticache"
+  s3_policy_name     = "${local.weblate_tag}-s3-policy"
 
   stack_secrets_path   = "applications/${var.aws_profile}/${var.environment}/${local.stack_name}-stack"
   service_secrets_path = "${local.stack_secrets_path}/weblate"

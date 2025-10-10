@@ -3,8 +3,8 @@ module "secrets" {
 
   name_prefix = "${local.whole_service_name}-${var.environment}"
   environment = var.environment
-  kms_key_id  = data.aws_kms_key.kms_key.id
-  secrets     = nonsensitive(local.service_secrets_sanitised)
+  kms_key_id  = module.common_secrets.kms_key_id
+  secrets     = nonsensitive(module.common_secrets.service_secrets_sanitised)
 }
 
 # run 1st: celery-beat only (which should start before the other ECS services)
@@ -58,7 +58,11 @@ resource "aws_iam_role_policy_attachment" "ecs_task_ssm" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+# lookup for the S3 policy created in module-init-and-rds
+data "aws_iam_policy" "weblate_s3_policy" {
+  name = local.s3_policy_name
+}
 resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
   role       = aws_iam_role.ecs_task_role.name
-  policy_arn = aws_iam_policy.weblate_s3_policy.arn
+  policy_arn = data.aws_iam_policy.weblate_s3_policy.arn
 }
