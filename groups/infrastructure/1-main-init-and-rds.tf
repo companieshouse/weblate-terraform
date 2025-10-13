@@ -1,4 +1,4 @@
-// This triggers the 1st phase (to create some first resources, mainly RDS)
+# This triggers the 1st phase (to create some first resources, mainly RDS)
 module "init_and_rds" {
   source = "./module-init-and-rds"
   config = {

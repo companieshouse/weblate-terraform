@@ -1,4 +1,4 @@
-// This is a common 'main' code used by more phases (mainly to source secrets from vault)
+# This is a common 'main' code used by more phases (mainly to source secrets from vault)
 module "common_secrets" {
   source = "./module-secrets"
   config = {

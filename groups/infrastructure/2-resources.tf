@@ -51,17 +51,13 @@ resource "aws_security_group" "efs" {
   vpc_id      = data.aws_vpc.vpc.id
   description = "EFS security group"
 }
-resource "aws_security_group_rule" "efs_from_ecs" {
-  for_each = toset(local.ecs_security_group_ids)
 
-  type                     = "ingress"
-  from_port                = 2049
-  to_port                  = 2049
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.efs.id
-  source_security_group_id = each.value
-  description              = "Allow NFS access from ECS service SG ${each.value}"
-}
+# resource "aws_security_group_rule" "..." {
+#   for_each ECS sertvices security groups
+
+#   type                     = "ingress" <===== the "ingress" rules are added while instating the ECS services
+# ...
+# }
 
 resource "aws_security_group_rule" "efs_egress_all" {
   type              = "egress"

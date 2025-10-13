@@ -32,6 +32,7 @@ module "ecs-service-celery-beat" {
   }
 
   config     = each.value
+  efs_security_group_id = aws_security_group.efs.id
   depends_on = [module.secrets, module.db_config]
 }
 
@@ -48,5 +49,6 @@ module "ecs-services" {
   }
 
   config     = each.value
+  efs_security_group_id = aws_security_group.efs.id
   depends_on = [module.ecs-service-celery-beat] # <-- here the dependency which will run this after
 }
