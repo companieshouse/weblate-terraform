@@ -52,7 +52,7 @@ resource "aws_security_group" "efs" {
   description = "EFS security group"
 }
 resource "aws_security_group_rule" "efs_from_ecs" {
-  for_each = toset(ecs_security_group_ids)
+  for_each = toset(local.ecs_security_group_ids)
 
   type                     = "ingress"
   from_port                = 2049
