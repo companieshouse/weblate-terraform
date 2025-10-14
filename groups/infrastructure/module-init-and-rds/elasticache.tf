@@ -1,35 +1,21 @@
 resource "aws_security_group" "redis_sg" {
-  name        = "${var.config.environment}-${var.config.whole_service_name}-redis-sg"
+  name        = var.config.redis_sg_name
   description = "Allow weblate ECS tasks to access Redis"
   vpc_id      = var.config.vpc_id
-  ingress {
-    from_port   = 6379
-    to_port     = 6379
-    protocol    = "tcp"
-    cidr_blocks = [var.config.vpc_cidr_block] # <-- allow from whole VPC
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
-# Ingress rules for each weblate ECS SG into Redis
-# resource "aws_security_group_rule" "redis_from_ecs" {
-#   for_each = merge(
-#     module.ecs-services,
-#     module.ecs-service-celery-beat
-#   )
-#   type                     = "ingress"
-#   from_port                = 6379
-#   to_port                  = 6379
-#   protocol                 = "tcp"
-#   source_security_group_id = each.value.security_group_id
-#   security_group_id        = aws_security_group.redis_sg.id
-# }
+# ECS ingress rules are added while provisioning the ECS services
+
+# Add 1 single egress rule
+resource "aws_security_group_rule" "redis_egress_all" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.redis_sg.id
+  description       = "Allow all outbound traffic"
+}
 
 resource "aws_elasticache_subnet_group" "weblate" {
   name       = "${var.config.environment}-weblate-redis-subnets"

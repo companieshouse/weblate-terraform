@@ -4,9 +4,6 @@ locals {
   global_prefix      = "global-${var.environment}"
   whole_service_name = "weblate"
   weblate_tag        = "${var.environment}-${local.whole_service_name}"
-  rds_identifier     = "${local.weblate_tag}-postgresdb"
-  elasticache_id     = "${local.weblate_tag}-elasticache"
-  s3_policy_name     = "${local.weblate_tag}-s3-policy"
 
   stack_secrets_path   = "applications/${var.aws_profile}/${var.environment}/${local.stack_name}-stack"
   service_secrets_path = "${local.stack_secrets_path}/weblate"
@@ -18,5 +15,19 @@ locals {
   application_subnet_ids     = data.aws_subnets.application.ids
   application_subnet_pattern = module.common_secrets.application_subnet_pattern
 
+  # rds
+  rds_identifier = "${local.weblate_tag}-postgresdb"
+  rds_sg_name    = "${local.weblate_tag}-rds-sg"
+
+  # redis
+  redis_id      = "${local.weblate_tag}-redis"
+  redis_sg_name = "${local.weblate_tag}-redis-sg"
+
+  # efs
+  efs_sg_name = "${local.weblate_tag}-efs-sg"
+
+  # s3 bucket
   s3_bucket_name = "${var.environment}-weblate-media"
+  s3_policy_name = "${local.weblate_tag}-s3-policy"
+
 }

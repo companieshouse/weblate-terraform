@@ -58,6 +58,17 @@ module "ecs-service" {
   task_role_arn          = var.config.task_role_arn
   enable_execute_command = var.config.enable_execute_command
 }
+
+resource "aws_security_group_rule" "rds_ingress" {
+  type                     = "ingress"
+  from_port                = 5432
+  to_port                  = 5432
+  protocol                 = "tcp"
+  security_group_id        = var.rds_security_group_id
+  source_security_group_id = module.ecs_service.fargate_security_group_id
+  description              = "Allow RDS access from ECS service ${var.config.service_name}"
+}
+
 # Add this ECS security group to the shared EFS ingress rules
 resource "aws_security_group_rule" "efs_ingress" {
   type                     = "ingress"
@@ -67,4 +78,15 @@ resource "aws_security_group_rule" "efs_ingress" {
   security_group_id        = var.efs_security_group_id
   source_security_group_id = module.ecs-service.fargate_security_group_id // output from terraform-modules/aws/ecs/ecs-service/outputs.tf
   description              = "Allow NFS access from ECS service SG ${var.config.service_name}"
+}
+
+# Add this ECS security group to Redis SG ingress rules
+resource "aws_security_group_rule" "redis_ingress" {
+  type                     = "ingress"
+  from_port                = 6379
+  to_port                  = 6379
+  protocol                 = "tcp"
+  security_group_id        = var.redis_security_group_id
+  source_security_group_id = module.ecs_service.fargate_security_group_id
+  description              = "Allow Redis access from ECS service ${var.config.service_name}"
 }

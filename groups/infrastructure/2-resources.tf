@@ -47,18 +47,14 @@ resource "aws_efs_file_system" "weblate" {
 }
 
 resource "aws_security_group" "efs" {
-  name        = "${local.weblate_tag}-efs-sg"
+  name        = local.efs_sg_name
   vpc_id      = data.aws_vpc.vpc.id
   description = "EFS security group"
 }
 
-# resource "aws_security_group_rule" "..." {
-#   for_each ECS sertvices security groups
+# ECS ingress rules are added while provisioning the ECS services
 
-#   type                     = "ingress" <===== the "ingress" rules are added while instating the ECS services
-# ...
-# }
-
+# Add 1 single egress rule
 resource "aws_security_group_rule" "efs_egress_all" {
   type              = "egress"
   from_port         = 0
