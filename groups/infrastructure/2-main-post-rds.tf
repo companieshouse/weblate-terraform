@@ -31,9 +31,9 @@ module "ecs-service-celery-beat" {
     if cfg.service_name == "weblate-celery-beat"
   }
 
-  config     = each.value
+  config                = each.value
   efs_security_group_id = aws_security_group.efs.id
-  depends_on = [module.secrets, module.db_config]
+  depends_on            = [module.secrets, module.db_config]
 }
 
 
@@ -48,7 +48,7 @@ module "ecs-services" {
     if cfg.service_name != "weblate-celery-beat"
   }
 
-  config     = each.value
+  config                = each.value
   efs_security_group_id = aws_security_group.efs.id
-  depends_on = [module.ecs-service-celery-beat] # <-- here the dependency which will run this after
+  depends_on            = [module.ecs-service-celery-beat] # <-- here the dependency which will run this after
 }
