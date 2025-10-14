@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "rds_ingress" {
   to_port                  = 5432
   protocol                 = "tcp"
   security_group_id        = var.rds_security_group_id
-  source_security_group_id = module.ecs_service.fargate_security_group_id
+  source_security_group_id = module.ecs-service.fargate_security_group_id
   description              = "Allow RDS access from ECS service ${var.config.service_name}"
 }
 
@@ -87,6 +87,6 @@ resource "aws_security_group_rule" "redis_ingress" {
   to_port                  = 6379
   protocol                 = "tcp"
   security_group_id        = var.redis_security_group_id
-  source_security_group_id = module.ecs_service.fargate_security_group_id
+  source_security_group_id = module.ecs-service.fargate_security_group_id
   description              = "Allow Redis access from ECS service ${var.config.service_name}"
 }
