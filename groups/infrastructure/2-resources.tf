@@ -2,7 +2,7 @@
 # ECS resources
 #---------------------------------------------------------------------
 resource "aws_iam_role" "ecs_task_role" {
-  name = "weblate-tasks-exec-role"
+  name = "${local.weblate_tag}-tasks-exec-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
