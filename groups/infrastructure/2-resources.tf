@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
 # EFS resources
 #---------------------------------------------------------------------
 resource "aws_efs_file_system" "weblate" {
-  creation_token   = "weblate-efs"
+  creation_token   = "${local.weblate_tag}-efs"
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
   lifecycle_policy {
