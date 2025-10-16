@@ -40,14 +40,14 @@ provider "postgresql" {
   superuser = false
 }
 
-# Create Weblate DB user
+# 1) Create Weblate user
 resource "postgresql_role" "weblate_user" {
   name     = var.config.db_username
   login    = true
   password = var.config.db_password
 }
 
-# Grant database privileges
+# 2) Connect permissions and schema usage
 resource "postgresql_grant" "weblate_db" {
   database    = local.db_name
   role        = postgresql_role.weblate_user.name
@@ -55,7 +55,7 @@ resource "postgresql_grant" "weblate_db" {
   privileges  = ["CONNECT", "TEMPORARY"]
 }
 
-# Schema ownership
+# 3) Ensure the public schema exists and is owned by our user
 resource "postgresql_schema" "public_schema" {
   database = local.db_name
   name     = "public"
@@ -71,7 +71,7 @@ resource "postgresql_grant" "weblate_schema_usage" {
   privileges  = ["USAGE", "CREATE"]
 }
 
-
+# 5) Default privileges for all future objects created in this schema
 resource "postgresql_default_privileges" "weblate_tables" {
   database    = local.db_name
   schema      = "public"
