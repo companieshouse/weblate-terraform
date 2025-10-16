@@ -52,7 +52,7 @@ resource "postgresql_grant" "weblate_db" {
   database    = local.db_name
   role        = postgresql_role.weblate_user.name
   object_type = "database"
-  privileges  = ["CONNECT", "TEMPORARY"]
+  privileges  = ["CONNECT", "CREATE", "TEMPORARY"]
 }
 
 # 3) Ensure the public schema exists and is owned by our user
