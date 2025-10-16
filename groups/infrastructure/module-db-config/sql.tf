@@ -78,7 +78,7 @@ resource "postgresql_default_privileges" "weblate_tables" {
   owner       = var.config.db_master_username
   object_type = "table"
   privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE"]
-  roles       = [postgresql_role.weblate_user.name]
+  role        = postgresql_role.weblate_user.name
 }
 
 resource "postgresql_default_privileges" "weblate_sequences" {
@@ -87,7 +87,7 @@ resource "postgresql_default_privileges" "weblate_sequences" {
   owner       = var.config.db_master_username
   object_type = "sequence"
   privileges  = ["USAGE", "SELECT", "UPDATE"]
-  roles       = [postgresql_role.weblate_user.name]
+  role        = postgresql_role.weblate_user.name
 }
 
 resource "postgresql_default_privileges" "weblate_functions" {
@@ -96,5 +96,5 @@ resource "postgresql_default_privileges" "weblate_functions" {
   owner       = var.config.db_master_username
   object_type = "function"
   privileges  = ["EXECUTE"]
-  roles       = [postgresql_role.weblate_user.name]
+  role        = postgresql_role.weblate_user.name
 }
