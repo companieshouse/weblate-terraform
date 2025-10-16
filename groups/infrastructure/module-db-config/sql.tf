@@ -68,7 +68,7 @@ resource "postgresql_grant" "weblate_schema_usage" {
   role        = postgresql_role.weblate_user.name
   schema      = "public"
   object_type = "schema"
-  privileges  = ["USAGE"]
+  privileges  = ["USAGE", "CREATE"]
 }
 
 
