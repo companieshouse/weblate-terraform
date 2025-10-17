@@ -4,7 +4,7 @@ These are the commands which should be executed:
  1) Create Weblate user
    CREATE USER cidev_weblate WITH PASSWORD '...';
  2) Connect permissions and schema usage
-   GRANT CONNECT ON DATABASE weblate TO cidev_weblate;
+   GRANT CONNECT, CREATE, TEMPORARY ON DATABASE weblate TO cidev_weblate;
  3) Ensure the public schema exists and is owned by our user
    ALTER SCHEMA public OWNER TO cidev_weblate;
    GRANT USAGE ON SCHEMA public TO cidev_weblate;
