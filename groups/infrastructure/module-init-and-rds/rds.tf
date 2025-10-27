@@ -12,7 +12,7 @@ resource "aws_security_group_rule" "rds_ingress_concourse" {
   from_port         = 5432
   to_port           = 5432
   protocol          = "tcp"
-  cidr_blocks       = ["10.44.0.0/16"]
+  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.shared_services_cidrs.id]
   security_group_id = aws_security_group.rds_sg.id
   description       = "Allow Concourse workers to access RDS"
 }
