@@ -18,15 +18,6 @@ resource "aws_security_group_rule" "rds_ingress_concourse" {
 }
 
 # # Add 1 single egress rule
-# resource "aws_security_group_rule" "rds_egress_all" {
-#   type              = "egress"
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.rds_sg.id
-#   description       = "Allow all outbound traffic"
-# }
 
 resource "aws_db_subnet_group" "weblate" {
   name       = "${var.config.environment}-weblate-db-subnets"

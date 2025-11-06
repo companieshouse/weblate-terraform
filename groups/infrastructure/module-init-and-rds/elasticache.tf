@@ -6,17 +6,6 @@ resource "aws_security_group" "redis_sg" {
 
 # ECS ingress rules are added while provisioning the ECS services
 
-# # Add 1 single egress rule
-# resource "aws_security_group_rule" "redis_egress_all" {
-#   type              = "egress"
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.redis_sg.id
-#   description       = "Allow all outbound traffic"
-# }
-
 resource "aws_elasticache_subnet_group" "weblate" {
   name       = "${var.config.environment}-weblate-redis-subnets"
   subnet_ids = var.config.application_subnet_ids
