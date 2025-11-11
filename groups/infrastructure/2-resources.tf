@@ -52,23 +52,9 @@ resource "aws_security_group" "efs" {
   description = "EFS security group"
 }
 
-# ECS ingress rules are added while provisioning the ECS services
-
-# Add 1 single egress rule
-# resource "aws_security_group_rule" "efs_egress_all" {
-#   type              = "egress"
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.efs.id
-#   description       = "Allow all outbound traffic"
-# }
-
-
 resource "aws_efs_mount_target" "weblate" {
-  for_each        = { for subnet_id in local.application_subnet_ids : subnet_id => subnet_id }
+  for_each        = toset(local.application_subnet_ids)
   file_system_id  = aws_efs_file_system.weblate.id
-  subnet_id       = each.key
+  subnet_id       = each.value
   security_groups = [aws_security_group.efs.id]
 }
