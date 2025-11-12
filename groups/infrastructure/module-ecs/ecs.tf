@@ -70,15 +70,15 @@ resource "aws_security_group_rule" "rds_ingress" {
 }
 
 # Add this ECS security group to the shared EFS ingress rules
-resource "aws_security_group_rule" "efs_ingress" {
-  type                     = "ingress"
-  from_port                = 2049
-  to_port                  = 2049
-  protocol                 = "tcp"
-  security_group_id        = var.efs_security_group_id
-  source_security_group_id = module.ecs-service.fargate_security_group_id // output from terraform-modules/aws/ecs/ecs-service/outputs.tf
-  description              = "Allow NFS access from ECS service SG ${var.config.service_name}"
-}
+# resource "aws_security_group_rule" "efs_ingress" {
+#   type                     = "ingress"
+#   from_port                = 2049
+#   to_port                  = 2049
+#   protocol                 = "tcp"
+#   security_group_id        = var.efs_security_group_id
+#   source_security_group_id = module.ecs-service.fargate_security_group_id // output from terraform-modules/aws/ecs/ecs-service/outputs.tf
+#   description              = "Allow NFS access from ECS service SG ${var.config.service_name}"
+# }
 
 # Add this ECS security group to Redis SG ingress rules
 resource "aws_security_group_rule" "redis_ingress" {

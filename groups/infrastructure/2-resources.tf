@@ -70,3 +70,14 @@ resource "aws_efs_mount_target" "weblate" {
   subnet_id       = each.value
   security_groups = [aws_security_group.efs.id]
 }
+
+# Allow ECS access from the VPC - we cannot add just the ECS SG as they are still unkown at this point
+resource "aws_security_group_rule" "efs_ingress" {
+  type              = "ingress"
+  from_port         = 2049
+  to_port           = 2049
+  protocol          = "tcp"
+  cidr_blocks       = [data.aws_vpc.vpc.cidr_block]
+  security_group_id = aws_security_group.efs.id
+  description       = "Allow NFS access from the VPC"
+}
