@@ -54,12 +54,12 @@ locals {
     { name : "REDIS_HOST", value : data.aws_elasticache_replication_group.weblate.primary_endpoint_address }
   ])
 
-  # these are shared across all ECS services
-  efs_mounts = {
-    data   = "/data"
-    static = "/static"
-    media  = "/media"
-  }
+  efs_shared_volume_name = "weblate-efs-shared"
+  efs_mounts = [
+    "data",
+    "static",
+    "media"
+  ]
 
   # ECS SETTINGS (COMMON)
   ecs_common = {
@@ -93,23 +93,25 @@ locals {
     read_only_root_filesystem = false
 
     volumes = [
-      for name, path in local.efs_mounts : {
-        name = "efs-${name}"
-        efsVolumeConfiguration = {
-          fileSystemId      = aws_efs_file_system.weblate.id
-          rootDirectory     = path
-          transitEncryption = "ENABLED"
+      {
+        name = local.efs_shared_volume_name
+        efs_volume_configuration = {
+          file_system_id     = aws_efs_file_system.weblate.id
+          root_directory     = "/"
+          transit_encryption = "ENABLED"
         }
       }
     ]
 
+    # Define the container mount points using that EFS volume
     mount_points = [
-      for name, _ in local.efs_mounts : {
-        sourceVolume  = "efs-${name}"
+      for name in local.efs_mounts : {
+        sourceVolume  = local.efs_shared_volume_name
         containerPath = "/app/${name}"
         readOnly      = false
       }
     ]
+
 
     # Service configuration
     name_prefix = local.name_prefix
