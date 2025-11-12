@@ -46,6 +46,18 @@ resource "aws_efs_file_system" "weblate" {
   }
 }
 
+resource "aws_efs_access_point" "weblate_accp" {
+  file_system_id = aws_efs_file_system.weblate.id
+
+  root_directory {
+    path = "/app"
+    creation_info {
+      owner_uid   = 1000
+      owner_gid   = 1000
+      permissions = "755"
+    }
+  }
+}
 resource "aws_security_group" "efs" {
   name        = local.efs_sg_name
   vpc_id      = data.aws_vpc.vpc.id

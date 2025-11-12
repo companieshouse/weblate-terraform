@@ -97,8 +97,10 @@ locals {
         name = local.efs_shared_volume_name
         efs_volume_configuration = {
           file_system_id     = aws_efs_file_system.weblate.id
-          root_directory     = "/"
           transit_encryption = "ENABLED"
+          authorization_config = {
+            access_point_id = aws_efs_access_point.weblate_accp.id
+          }
         }
       }
     ]
