@@ -28,7 +28,7 @@ resource "aws_efs_access_point" "weblate_accp" {
 
 resource "aws_security_group" "efs" {
   name        = var.config.efs_sg_name
-  vpc_id      = data.aws_vpc.vpc.id
+  vpc_id      = var.config.vpc_id
   description = "EFS security group"
 }
 
