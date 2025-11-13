@@ -45,7 +45,7 @@ resource "aws_security_group_rule" "efs_ingress" {
   from_port         = 2049
   to_port           = 2049
   protocol          = "tcp"
-  cidr_blocks       = [data.aws_vpc.vpc.cidr_block]
+  cidr_blocks       = [var.config.vpc_cidr_block]
   security_group_id = aws_security_group.efs.id
   description       = "Allow NFS access from the VPC"
 }
