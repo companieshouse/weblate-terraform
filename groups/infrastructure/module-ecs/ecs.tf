@@ -9,8 +9,6 @@ module "ecs-service" {
   ecs_cluster_id          = var.config.ecs_cluster_id
   task_execution_role_arn = var.config.task_execution_role_arn
 
-  fargate_ingress_cidrs   = var.config.fargate_ingress_cidrs
-
   # Load balancer configuration
   lb_listener_arn           = var.config.lb_listener_arn
   lb_listener_rule_priority = var.config.lb_listener_rule_priority
@@ -91,4 +89,15 @@ resource "aws_security_group_rule" "redis_ingress" {
   security_group_id        = var.redis_security_group_id
   source_security_group_id = module.ecs-service.fargate_security_group_id
   description              = "Allow Redis access from ECS service ${var.config.service_name}"
+}
+
+# Add 1 single egress rule to allow all outbound traffic from ECS tasks (mainlly to catch DNS requests (both udp/tcp 53))
+resource "aws_security_group_rule" "ecs_egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1" # all protocols
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = module.ecs-service.fargate_security_group_id
+  description       = "Allow outbound traffic for ECS service ${var.config.service_name}"
 }

@@ -72,8 +72,6 @@ locals {
     vpc_id                  = data.aws_vpc.vpc.id
     ecs_cluster_id          = data.aws_ecs_cluster.ecs_cluster.id
     task_execution_role_arn = data.aws_iam_role.ecs_cluster_iam_role.arn
-    fargate_ingress_cidrs   = [data.aws_vpc.vpc.cidr_block]
-
 
     batch_service = true # default to true for all services (only web will override with false)
     # Load balancer configuration (empty apart from web)
