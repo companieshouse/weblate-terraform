@@ -91,13 +91,3 @@ resource "aws_security_group_rule" "redis_ingress" {
   description              = "Allow Redis access from ECS service ${var.config.service_name}"
 }
 
-# Add 1 single egress rule to allow all outbound traffic from ECS tasks (mainlly to catch DNS requests (both udp/tcp 53))
-resource "aws_security_group_rule" "ecs_egress" {
-  type              = "egress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1" # all protocols
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.ecs-service.fargate_security_group_id
-  description       = "Allow outbound traffic for ECS service ${var.config.service_name}"
-}

@@ -35,7 +35,12 @@ module "ecs-service-celery-beat" {
   redis_security_group_id = data.aws_security_group.redis_sg.id // prev. phase
   efs_security_group_id   = aws_security_group.efs.id           // this phase
 
-  depends_on = [module.secrets, module.db_config, aws_efs_mount_target.weblate]
+  depends_on = [
+    module.secrets,
+    module.db_config,
+    aws_efs_mount_target.weblate,
+    aws_security_group_rule.celery_beat_egress # make ECS creation dependent on SG rule [so the chain will be 1) ECS SG creation 2) egress rule attached 3) ECS creation]
+  ]
 }
 
 
@@ -55,5 +60,39 @@ module "ecs-services" {
   redis_security_group_id = data.aws_security_group.redis_sg.id // prev. phase
   efs_security_group_id   = aws_security_group.efs.id           // this phase
 
-  depends_on = [module.ecs-service-celery-beat] # <-- here the dependency which will run this after
+  depends_on = [
+    module.ecs-service-celery-beat,        # <-- here the dependency which will run this after
+    aws_security_group_rule.service_egress # same dependency 1)..2)..3).. as in celery-beat
+  ]
+}
+
+
+# create the egress rules to attach to the celery-beat ECS security groups
+# (mainlly to send DNS requests (both udp/tcp 53))
+
+resource "aws_security_group_rule" "celery_beat_egress" {
+  for_each = module.ecs-service-celery-beat
+
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = each.value.fargate_security_group_id
+  description       = "Allow outbound traffic for ECS service ${each.value.service_name}"
+
+}
+
+# create the egress rules to attach to the other ECS security groups
+# (mainlly to send DNS requests (both udp/tcp 53))
+resource "aws_security_group_rule" "service_egress" {
+  for_each = module.ecs-services
+
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = each.value.fargate_security_group_id
+  description       = "Allow outbound traffic for ECS service ${each.value.service_name}"
 }
