@@ -22,5 +22,7 @@ module "init_and_rds" {
     /* elasticache/redis */
     redis_id      = local.redis_id
     redis_sg_name = local.redis_sg_name
+    /* efs */
+    efs_sg_name = local.efs_sg_name
   }
 }
