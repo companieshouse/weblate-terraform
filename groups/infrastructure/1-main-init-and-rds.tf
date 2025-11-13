@@ -6,7 +6,6 @@ module "init_and_rds" {
     whole_service_name         = local.whole_service_name
     weblate_tag                = local.weblate_tag
     vpc_id                     = data.aws_vpc.vpc.id
-    vpc_cidr_block             = data.aws_vpc.vpc.cidr_block
     concourse_cidrs            = module.common_secrets.concourse_cidrs
     application_subnet_pattern = local.application_subnet_pattern
     application_subnet_ids     = local.application_subnet_ids

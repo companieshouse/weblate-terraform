@@ -9,6 +9,8 @@ module "ecs-service" {
   ecs_cluster_id          = var.config.ecs_cluster_id
   task_execution_role_arn = var.config.task_execution_role_arn
 
+  fargate_ingress_cidrs   = var.config.fargate_ingress_cidrs
+
   # Load balancer configuration
   lb_listener_arn           = var.config.lb_listener_arn
   lb_listener_rule_priority = var.config.lb_listener_rule_priority
