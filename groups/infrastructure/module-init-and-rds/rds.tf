@@ -16,7 +16,15 @@ resource "aws_vpc_security_group_ingress_rule" "rds_ingress_concourse" {
   description       = "Allow Concourse workers to access RDS"
 }
 
-# # Add 1 single egress rule
+# Add shared-ECS SG to ingress rules
+resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
+  security_group_id            = aws_security_group.rds_sg.id
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.ecs_shared.id
+  description                  = "Allow access from weblate ECS services"
+}
 
 resource "aws_db_subnet_group" "weblate" {
   name       = "${var.config.environment}-weblate-db-subnets"

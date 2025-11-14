@@ -4,7 +4,15 @@ resource "aws_security_group" "redis_sg" {
   description = "Allow weblate ECS tasks to access Redis"
 }
 
-# ECS ingress rules are added while provisioning the ECS services
+# Add shared-ECS SG to ingress rules
+resource "aws_vpc_security_group_ingress_rule" "redis_ingress" {
+  security_group_id            = aws_security_group.redis_sg.id
+  from_port                    = 6379
+  to_port                      = 6379
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.ecs_shared.id
+  description                  = "Allow access from weblate ECS services"
+}
 
 resource "aws_elasticache_subnet_group" "weblate" {
   name       = "${var.config.environment}-weblate-redis-subnets"

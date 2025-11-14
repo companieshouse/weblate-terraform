@@ -9,6 +9,8 @@ module "init_and_rds" {
     concourse_cidrs            = module.common_secrets.concourse_cidrs
     application_subnet_pattern = local.application_subnet_pattern
     application_subnet_ids     = local.application_subnet_ids
+    /* ecs */
+    ecs_shared_sg_name = local.ecs_shared_sg_name
     /* s3 */
     s3_bucket_name = local.s3_bucket_name
     s3_policy_name = local.s3_policy_name

@@ -26,6 +26,9 @@ locals {
   # efs
   efs_sg_name = "${local.weblate_tag}-efs-sg"
 
+  # ecs
+  ecs_shared_sg_name = "${local.weblate_tag}-ecs-shared-sg"
+
   # s3 bucket
   s3_bucket_name = "${var.environment}-weblate-media"
   s3_policy_name = "${local.weblate_tag}-s3-policy"

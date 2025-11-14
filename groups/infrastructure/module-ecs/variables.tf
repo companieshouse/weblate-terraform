@@ -16,6 +16,11 @@ variable "efs_security_group_id" {
   type        = string
 }
 
+variable "ecs_shared_security_group_id" {
+  description = "The weblate ECS shared security group ID"
+  type        = string
+}
+
 variable "rds_security_group_id" {
   description = "The security group ID of the RDS instance"
   type        = string
