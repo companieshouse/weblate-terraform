@@ -31,70 +31,70 @@ terraform {
   }
 }
 # PostgreSQL provider — connects directly to RDS
-provider "postgresql" {
-  host      = data.aws_db_instance.weblate.address
-  port      = 5432
-  username  = var.config.db_master_username
-  password  = var.config.db_master_password
-  sslmode   = "require"
-  superuser = false
-}
+# provider "postgresql" {
+#   host      = data.aws_db_instance.weblate.address
+#   port      = 5432
+#   username  = var.config.db_master_username
+#   password  = var.config.db_master_password
+#   sslmode   = "require"
+#   superuser = false
+# }
 
-# 1) Create Weblate user
-resource "postgresql_role" "weblate_user" {
-  name     = var.config.db_username
-  login    = true
-  password = var.config.db_password
-}
+# # 1) Create Weblate user
+# resource "postgresql_role" "weblate_user" {
+#   name     = var.config.db_username
+#   login    = true
+#   password = var.config.db_password
+# }
 
-# 2) Connect permissions and schema usage
-resource "postgresql_grant" "weblate_db" {
-  database    = local.db_name
-  role        = postgresql_role.weblate_user.name
-  object_type = "database"
-  privileges  = ["CONNECT", "CREATE", "TEMPORARY"]
-}
+# # 2) Connect permissions and schema usage
+# resource "postgresql_grant" "weblate_db" {
+#   database    = local.db_name
+#   role        = postgresql_role.weblate_user.name
+#   object_type = "database"
+#   privileges  = ["CONNECT", "CREATE", "TEMPORARY"]
+# }
 
-# 3) Ensure the public schema exists and is owned by our user
-resource "postgresql_schema" "public_schema" {
-  database = local.db_name
-  name     = "public"
-  owner    = postgresql_role.weblate_user.name
-}
+# # 3) Ensure the public schema exists and is owned by our user
+# resource "postgresql_schema" "public_schema" {
+#   database = local.db_name
+#   name     = "public"
+#   owner    = postgresql_role.weblate_user.name
+# }
 
-# Privileges on schema, tables, sequences, functions
-resource "postgresql_grant" "weblate_schema_usage" {
-  database    = local.db_name
-  role        = postgresql_role.weblate_user.name
-  schema      = "public"
-  object_type = "schema"
-  privileges  = ["USAGE", "CREATE"]
-}
+# # Privileges on schema, tables, sequences, functions
+# resource "postgresql_grant" "weblate_schema_usage" {
+#   database    = local.db_name
+#   role        = postgresql_role.weblate_user.name
+#   schema      = "public"
+#   object_type = "schema"
+#   privileges  = ["USAGE", "CREATE"]
+# }
 
-# 5) Default privileges for all future objects created in this schema
-resource "postgresql_default_privileges" "weblate_tables" {
-  database    = local.db_name
-  schema      = "public"
-  owner       = var.config.db_master_username
-  object_type = "table"
-  privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE"]
-  role        = postgresql_role.weblate_user.name
-}
+# # 5) Default privileges for all future objects created in this schema
+# resource "postgresql_default_privileges" "weblate_tables" {
+#   database    = local.db_name
+#   schema      = "public"
+#   owner       = var.config.db_master_username
+#   object_type = "table"
+#   privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE"]
+#   role        = postgresql_role.weblate_user.name
+# }
 
-resource "postgresql_default_privileges" "weblate_sequences" {
-  database    = local.db_name
-  schema      = "public"
-  owner       = var.config.db_master_username
-  object_type = "sequence"
-  privileges  = ["USAGE", "SELECT", "UPDATE"]
-  role        = postgresql_role.weblate_user.name
-}
+# resource "postgresql_default_privileges" "weblate_sequences" {
+#   database    = local.db_name
+#   schema      = "public"
+#   owner       = var.config.db_master_username
+#   object_type = "sequence"
+#   privileges  = ["USAGE", "SELECT", "UPDATE"]
+#   role        = postgresql_role.weblate_user.name
+# }
 
-resource "postgresql_default_privileges" "weblate_functions" {
-  database    = local.db_name
-  schema      = "public"
-  owner       = var.config.db_master_username
-  object_type = "function"
-  privileges  = ["EXECUTE"]
-  role        = postgresql_role.weblate_user.name
-}
+# resource "postgresql_default_privileges" "weblate_functions" {
+#   database    = local.db_name
+#   schema      = "public"
+#   owner       = var.config.db_master_username
+#   object_type = "function"
+#   privileges  = ["EXECUTE"]
+#   role        = postgresql_role.weblate_user.name
+# }
