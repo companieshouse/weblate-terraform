@@ -16,12 +16,12 @@ variable "efs_security_group_id" {
   type        = string
 }
 
-variable "rds_security_group_id" {
-  description = "The security group ID of the RDS instance"
-  type        = string
-}
+# variable "rds_security_group_id" {
+#   description = "The security group ID of the RDS instance"
+#   type        = string
+# }
 
-variable "redis_security_group_id" {
-  description = "The security group ID of the Redis instance"
-  type        = string
-}
+# variable "redis_security_group_id" {
+#   description = "The security group ID of the Redis instance"
+#   type        = string
+# }

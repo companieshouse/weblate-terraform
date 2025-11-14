@@ -22,13 +22,13 @@ resource "aws_iam_role_policy_attachment" "ecs_task_ssm" {
 }
 
 # lookup for the S3 policy created in module-init-and-rds
-data "aws_iam_policy" "weblate_s3_policy" {
-  name = local.s3_policy_name
-}
-resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = data.aws_iam_policy.weblate_s3_policy.arn
-}
+# data "aws_iam_policy" "weblate_s3_policy" {
+#   name = local.s3_policy_name
+# }
+# resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
+#   role       = aws_iam_role.ecs_task_role.name
+#   policy_arn = data.aws_iam_policy.weblate_s3_policy.arn
+# }
 
 
 #---------------------------------------------------------------------
