@@ -8,7 +8,7 @@ module "ecs-service" {
   vpc_id                     = var.config.vpc_id
   ecs_cluster_id             = var.config.ecs_cluster_id
   task_execution_role_arn    = var.config.task_execution_role_arn
-  fargate_security_group_ids = [var.config.ecs_shared_security_group_id]
+  fargate_security_group_ids = [var.ecs_shared_security_group_id]
 
   # Load balancer configuration
   lb_listener_arn           = var.config.lb_listener_arn
