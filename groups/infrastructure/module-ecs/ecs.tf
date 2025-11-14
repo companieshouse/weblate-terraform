@@ -59,6 +59,7 @@ module "ecs-service" {
   enable_execute_command = var.config.enable_execute_command
 }
 
+# Add this ECS security group to RDS SG ingress rules
 resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
   security_group_id            = var.rds_security_group_id
   from_port                    = 5432
@@ -69,14 +70,14 @@ resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
 }
 
 # Add this ECS security group to the shared EFS ingress rules
-# resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
-#   security_group_id            = var.efs_security_group_id
-#   from_port                   = 2049
-#   to_port                     = 2049
-#   ip_protocol                 = "tcp"
-#   referenced_security_group_id = module.ecs-service.fargate_security_group_id
-#   description                 = "Allow NFS access from ECS service SG ${var.config.service_name}"
-# }
+resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
+  security_group_id            = var.efs_security_group_id
+  from_port                   = 2049
+  to_port                     = 2049
+  ip_protocol                 = "tcp"
+  referenced_security_group_id = module.ecs-service.fargate_security_group_id
+  description                 = "Allow NFS access from ECS service SG ${var.config.service_name}"
+}
 
 # Add this ECS security group to Redis SG ingress rules
 resource "aws_vpc_security_group_ingress_rule" "redis_ingress" {
