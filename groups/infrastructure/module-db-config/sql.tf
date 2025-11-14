@@ -22,14 +22,14 @@ These are the commands which should be executed:
    GRANT ALL PRIVILEGES ON DATABASE weblate TO cidev_weblate;
 */
 # this duplicated provider setting in a submodule is one of the many terraform limitations
-terraform {
-  required_providers {
-    postgresql = {
-      source  = "cyrilgdn/postgresql"
-      version = "~> 1.26.0"
-    }
-  }
-}
+# terraform {
+#   required_providers {
+#     postgresql = {
+#       source  = "cyrilgdn/postgresql"
+#       version = "~> 1.26.0"
+#     }
+#   }
+# }
 # PostgreSQL provider — connects directly to RDS
 # provider "postgresql" {
 #   host      = data.aws_db_instance.weblate.address
