@@ -7,13 +7,12 @@ resource "aws_security_group" "rds_sg" {
 # ECS ingress rules are added while provisioning the ECS services
 
 # Add Concourse workers CIDR to access RDS
-resource "aws_security_group_rule" "rds_ingress_concourse" {
-  type              = "ingress"
+resource "aws_vpc_security_group_ingress_rule" "rds_ingress_concourse" {
+  security_group_id = aws_security_group.rds_sg.id
   from_port         = 5432
   to_port           = 5432
-  protocol          = "tcp"
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.shared_services_cidrs.id]
-  security_group_id = aws_security_group.rds_sg.id
+  ip_protocol       = "tcp"
+  prefix_list_id    = data.aws_ec2_managed_prefix_list.shared_services_cidrs.id
   description       = "Allow Concourse workers to access RDS"
 }
 
