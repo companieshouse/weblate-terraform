@@ -1,15 +1,15 @@
 terraform {
   backend "s3" {
   }
-  required_version = "~> 1.3.0"
+  required_version = "~> 1.3"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.54.0"
+      version = ">= 5.0, < 6.17"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "~> 3.18.0"
+      version = ">= 3.25.0, < 5.3.1"
     }
     postgresql = {
       source  = "cyrilgdn/postgresql"
