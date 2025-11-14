@@ -22,13 +22,13 @@ resource "aws_iam_role_policy_attachment" "ecs_task_ssm" {
 }
 
 # lookup for the S3 policy created in module-init-and-rds
-# data "aws_iam_policy" "weblate_s3_policy" {
-#   name = local.s3_policy_name
-# }
-# resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
-#   role       = aws_iam_role.ecs_task_role.name
-#   policy_arn = data.aws_iam_policy.weblate_s3_policy.arn
-# }
+data "aws_iam_policy" "weblate_s3_policy" {
+  name = local.s3_policy_name
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = data.aws_iam_policy.weblate_s3_policy.arn
+}
 
 
 #---------------------------------------------------------------------
@@ -72,11 +72,11 @@ resource "aws_efs_mount_target" "weblate" {
 }
 
 # Allow ECS access from the VPC - we cannot add just the ECS SG as they are still unkown at this point
-# resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
-#   security_group_id = aws_security_group.efs.id
-#   from_port         = 2049
-#   to_port           = 2049
-#   ip_protocol       = "tcp"
-#   cidr_ipv4         = data.aws_vpc.vpc.cidr_block
-#   description       = "Allow NFS access from the VPC"
-# }
+resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
+  security_group_id = aws_security_group.efs.id
+  from_port         = 2049
+  to_port           = 2049
+  ip_protocol       = "tcp"
+  cidr_ipv4         = data.aws_vpc.vpc.cidr_block
+  description       = "Allow NFS access from the VPC"
+}

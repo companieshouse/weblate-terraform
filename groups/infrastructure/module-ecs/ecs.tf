@@ -1,5 +1,5 @@
 module "ecs-service" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.340"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=weblate" # off 1.0.340
 
   # Environmental configuration
   environment             = var.config.environment
@@ -60,41 +60,41 @@ module "ecs-service" {
 }
 
 # Add this ECS security group to RDS SG ingress rules
-# resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
-#   security_group_id            = var.rds_security_group_id
-#   from_port                    = 5432
-#   to_port                      = 5432
-#   ip_protocol                  = "tcp"
-#   referenced_security_group_id = module.ecs-service.fargate_security_group_id
-#   description                  = "Allow RDS access from ECS service ${var.config.service_name}"
-# }
+resource "aws_vpc_security_group_ingress_rule" "rds_ingress" {
+  security_group_id            = var.rds_security_group_id
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = module.ecs-service.fargate_security_group_id
+  description                  = "Allow RDS access from ECS service ${var.config.service_name}"
+}
 
 # Add this ECS security group to Redis SG ingress rules
-# resource "aws_vpc_security_group_ingress_rule" "redis_ingress" {
-#   security_group_id            = var.redis_security_group_id
-#   from_port                    = 6379
-#   to_port                      = 6379
-#   ip_protocol                  = "tcp"
-#   referenced_security_group_id = module.ecs-service.fargate_security_group_id
-#   description                  = "Allow Redis access from ECS service ${var.config.service_name}"
-# }
+resource "aws_vpc_security_group_ingress_rule" "redis_ingress" {
+  security_group_id            = var.redis_security_group_id
+  from_port                    = 6379
+  to_port                      = 6379
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = module.ecs-service.fargate_security_group_id
+  description                  = "Allow Redis access from ECS service ${var.config.service_name}"
+}
 
-# # Add this ECS security group to the shared EFS ingress rules
-# resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
-#   security_group_id            = var.efs_security_group_id
-#   from_port                   = 2049
-#   to_port                     = 2049
-#   ip_protocol                 = "tcp"
-#   referenced_security_group_id = module.ecs-service.fargate_security_group_id
-#   description                 = "Allow NFS access from ECS service SG ${var.config.service_name}"
-# }
+# Add this ECS security group to the shared EFS ingress rules
+resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
+  security_group_id            = var.efs_security_group_id
+  from_port                   = 2049
+  to_port                     = 2049
+  ip_protocol                 = "tcp"
+  referenced_security_group_id = module.ecs-service.fargate_security_group_id
+  description                 = "Allow NFS access from ECS service SG ${var.config.service_name}"
+}
 
-# # Add to this ECS SG an Egress rule to allow udp/tcp 53
-# resource "aws_vpc_security_group_egress_rule" "efs_egress_dns" {
-#   security_group_id = module.ecs-service.fargate_security_group_id
-#   from_port         = 53
-#   to_port           = 53
-#   ip_protocol       = "-1"
-#   cidr_ipv4         = "0.0.0.0/0"
-#   description       = "Allow all egress on port 53 (any protocol) from EFS SG"
-# }
+# Add to this ECS SG an Egress rule to allow udp/tcp 53
+resource "aws_vpc_security_group_egress_rule" "efs_egress_dns" {
+  security_group_id = module.ecs-service.fargate_security_group_id
+  from_port         = 53
+  to_port           = 53
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
+  description       = "Allow all egress on port 53 (any protocol) from EFS SG"
+}

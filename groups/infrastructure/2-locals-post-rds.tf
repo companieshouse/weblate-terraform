@@ -48,10 +48,10 @@ locals {
     { name : "AWS_S3_REGION_NAME", value : var.aws_region },
     { name : "WEBLATE_DEBUG", value : "1" },
     { name : "WEBLATE_LOGLEVEL", value : "DEBUG" },
-    # { name : "POSTGRES_HOST", value : data.aws_db_instance.weblate.address },
-    # { name : "POSTGRES_DB", value : var.postgres_db },
-    { name : "POSTGRES_PORT", value : "5432" }
-    # { name : "REDIS_HOST", value : data.aws_elasticache_replication_group.weblate.primary_endpoint_address }
+    { name : "POSTGRES_HOST", value : data.aws_db_instance.weblate.address },
+    { name : "POSTGRES_DB", value : var.postgres_db },
+    { name : "POSTGRES_PORT", value : "5432" },
+    { name : "REDIS_HOST", value : data.aws_elasticache_replication_group.weblate.primary_endpoint_address }
   ])
 
   efs_shared_volume_name = "weblate-efs-shared"
