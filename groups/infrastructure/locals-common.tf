@@ -31,6 +31,6 @@ locals {
 
   # s3 bucket
   s3_bucket_name = "${var.environment}-weblate-media"
-  s3_policy_name = "${local.weblate_tag}-s3-policy"
+  s3_policy_name = "${local.weblate_tag}-s3media-policy"
 
 }
