@@ -65,7 +65,7 @@ resource "aws_security_group" "efs_sg" {
 }
 
 resource "aws_efs_mount_target" "weblate" {
-  for_each        = toset(local.application_subnet_ids)
+  for_each        = toset(local.efs_subnet_ids)
   file_system_id  = aws_efs_file_system.weblate.id
   subnet_id       = each.value
   security_groups = [aws_security_group.efs_sg.id]
