@@ -16,9 +16,9 @@ locals {
   application_subnet_pattern = module.common_secrets.application_subnet_pattern
 
   // EFS should stay in the same VPC, but in cidev the DNS config doesn't allow that (INC0527374)
-  efs_vpc_name       = var.environment == "cidev" ? local.vpc_name : "Management"
+  efs_vpc_name       = var.environment == "cidev" ? "Management" : local.vpc_name
   efs_subnet_ids     = data.aws_subnets.efs_subnets.ids
-  efs_subnet_pattern = var.environment == "cidev" ? local.application_subnet_pattern : "dev-management-private-*"
+  efs_subnet_pattern = var.environment == "cidev" ? "dev-management-private-*" : local.application_subnet_pattern
 
   # rds
   rds_identifier = "${local.weblate_tag}-postgresdb"
