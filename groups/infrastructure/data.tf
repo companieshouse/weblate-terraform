@@ -7,11 +7,27 @@ data "aws_vpc" "vpc" {
   }
 }
 
+#Get EFS VPC (in CIDEV it cannot be in the usual app/dev VPC)
+data "aws_vpc" "efs_vpc" {
+  filter {
+    name   = "tag:Name"
+    values = [local.efs_vpc_name]
+  }
+}
+
 #Get application subnet IDs
 data "aws_subnets" "application" {
   filter {
     name   = "tag:Name"
     values = [local.application_subnet_pattern]
+  }
+}
+
+#Get EFS subnet IDs
+data "aws_subnets" "efs_subnets" {
+  filter {
+    name   = "tag:Name"
+    values = [local.efs_subnet_pattern]
   }
 }
 

@@ -60,7 +60,7 @@ resource "aws_efs_access_point" "weblate_accp" {
 }
 resource "aws_security_group" "efs_sg" {
   name        = local.efs_sg_name
-  vpc_id      = data.aws_vpc.vpc.id
+  vpc_id      = data.aws_vpc.efs_vpc.id
   description = "EFS security group"
 }
 
