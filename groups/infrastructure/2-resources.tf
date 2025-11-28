@@ -64,8 +64,15 @@ resource "aws_security_group" "efs_sg" {
   description = "EFS security group"
 }
 
-resource "aws_efs_mount_target" "weblate" {
+resource "aws_efs_mount_target" "weblate_efs_vpc_mounts" {
   for_each        = toset(local.efs_subnet_ids)
+  file_system_id  = aws_efs_file_system.weblate.id
+  subnet_id       = each.value
+  security_groups = [aws_security_group.efs_sg.id]
+}
+
+resource "aws_efs_mount_target" "weblate_application_vpc_mounts" {
+  for_each        = toset(local.application_subnet_ids)
   file_system_id  = aws_efs_file_system.weblate.id
   subnet_id       = each.value
   security_groups = [aws_security_group.efs_sg.id]

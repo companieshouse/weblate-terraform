@@ -39,7 +39,8 @@ module "ecs-service-celery-beat" {
   depends_on = [
     module.secrets,
     module.db_config,
-    aws_efs_mount_target.weblate
+    aws_efs_mount_target.weblate_efs_vpc_mounts,
+    aws_efs_mount_target.weblate_application_vpc_mounts
   ]
 }
 
