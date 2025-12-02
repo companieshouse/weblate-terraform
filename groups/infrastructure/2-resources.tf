@@ -58,10 +58,17 @@ resource "aws_efs_access_point" "weblate_accp" {
     }
   }
 }
+// security group in EFS VPC
 resource "aws_security_group" "efs_sg" {
   name        = local.efs_sg_name
   vpc_id      = data.aws_vpc.efs_vpc.id
-  description = "EFS security group"
+  description = "EFS security group EFS VPC"
+}
+// security group in APP VPC
+resource "aws_security_group" "efs_sg_app_vpc" {
+  name        = local.efs_sg_name
+  vpc_id      = data.aws_vpc.vpc.id
+  description = "EFS security group APP VPC"
 }
 
 resource "aws_efs_mount_target" "weblate_efs_vpc_mounts" {
@@ -71,12 +78,6 @@ resource "aws_efs_mount_target" "weblate_efs_vpc_mounts" {
   security_groups = [aws_security_group.efs_sg.id]
 }
 
-resource "aws_efs_mount_target" "weblate_application_vpc_mounts" {
-  for_each        = toset(local.application_subnet_ids)
-  file_system_id  = aws_efs_file_system.weblate.id
-  subnet_id       = each.value
-  security_groups = [aws_security_group.efs_sg.id]
-}
 
 # Allow access to all ECS tasks in the shared ECS SG
 resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {

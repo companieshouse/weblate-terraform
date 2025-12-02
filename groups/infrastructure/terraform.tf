@@ -11,10 +11,6 @@ terraform {
       source  = "hashicorp/vault"
       version = ">= 3.25.0, < 5.3.1"
     }
-    postgresql = {
-      source  = "cyrilgdn/postgresql"
-      version = "~> 1.26.0"
-    }
   }
 }
 

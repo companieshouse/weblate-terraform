@@ -175,6 +175,18 @@ locals {
     },
     {
       service_name = "celery-beat"
+    },
+    {
+      service_name                   = "db-init" # custom task (not weblate) run database initialisation as a one-off task
+      env_file                       = "web"     # use the same env file as web
+      volumes                        = []        # no EFS volumes needed
+      mount_points                   = []        # no EFS needed
+      container_command              = ["/init_resources/init_resources.sh"]
+      use_task_container_healthcheck = false # one-off task - no healthcheck needed
+      task_environment = [
+        { name : "PGPASSWORD", value : module.common_secrets.db_master_password },
+        { name : "PSQL_MASTER_USER", value : module.common_secrets.db_master_username }
+      ]
     }
   ]
 
@@ -187,7 +199,7 @@ locals {
       var.ecs_configs[c.service_name],
       {
         service_name             = "weblate-${c.service_name}"
-        app_environment_filename = "weblate-${c.service_name}.env"
+        app_environment_filename = contains(keys(c), "env_file") && c.env_file != "" ? "weblate-${c.env_file}.env" : "weblate-${c.service_name}.env"
         task_environment = concat(
           local.ecs_common.task_environment,
           lookup(c, "task_environment", []), # service-specific (if any)
