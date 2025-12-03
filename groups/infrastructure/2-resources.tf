@@ -85,6 +85,6 @@ resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
   from_port         = 2049
   to_port           = 2049
   ip_protocol       = "tcp"
-  cidr_ipv4         = data.aws_subnets.application.cidr_blocks
+  cidr_ipv4         = data.aws_vpc.vpc.cidr_block
   description       = "Allow NFS access from weblate ECS"
 }
