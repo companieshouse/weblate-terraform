@@ -79,12 +79,12 @@ resource "aws_efs_mount_target" "weblate_efs_vpc_mounts" {
 }
 
 
-# Allow access to all ECS tasks in the shared ECS SG
+# Allow access from ECS VPC
 resource "aws_vpc_security_group_ingress_rule" "efs_ingress" {
-  security_group_id            = aws_security_group.efs_sg.id
-  from_port                    = 2049
-  to_port                      = 2049
-  ip_protocol                  = "tcp"
-  referenced_security_group_id = data.aws_security_group.ecs_shared_sg.id
-  description                  = "Allow NFS access from weblate ECS"
+  security_group_id = aws_security_group.efs_sg.id
+  from_port         = 2049
+  to_port           = 2049
+  ip_protocol       = "tcp"
+  cidr_ipv4         = data.aws_subnets.application.cidr_blocks
+  description       = "Allow NFS access from weblate ECS"
 }

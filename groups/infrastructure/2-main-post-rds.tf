@@ -1,13 +1,4 @@
-module "db_config" {
-  source = "./module-db-config"
-  config = {
-    rds_identifier     = local.rds_identifier
-    db_master_username = module.common_secrets.db_master_username
-    db_master_password = module.common_secrets.db_master_password
-    db_username        = module.common_secrets.db_username
-    db_password        = module.common_secrets.db_password
-  }
-}
+
 
 module "secrets" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.340"
@@ -18,7 +9,7 @@ module "secrets" {
   secrets     = nonsensitive(module.common_secrets.service_secrets_sanitised)
 }
 
-# run a custom one-off ECS task to initialise the database
+# run a one-off ECS task to initialise the database
 module "ecs-service-db-init" {
   source = "./module-ecs"
 
@@ -67,7 +58,7 @@ module "ecs-service-celery-beat" {
 module "ecs-services" {
   source = "./module-ecs"
 
-  # the loop will process all except 1 (celery-beat)
+  # the loop will process all except 1 (celery-beat/db-init)
   for_each = {
     for name, cfg in local.ecs_service_configs :
     name => cfg
