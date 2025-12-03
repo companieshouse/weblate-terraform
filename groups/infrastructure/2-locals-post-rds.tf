@@ -190,7 +190,6 @@ locals {
       task_environment = [
         { name : "PGPASSWORD", value : module.common_secrets.db_master_password },
         { name : "PSQL_MASTER_USER", value : module.common_secrets.db_master_username },
-        { name : "POSTGRES_USER", value : module.common_secrets.db_master_username },
         { name : "PGSSLMODE", value : "require" }
       ]
     }
