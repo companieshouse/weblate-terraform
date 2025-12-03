@@ -27,6 +27,7 @@ module "ecs-service" {
   docker_repo       = var.config.docker_repo
   container_version = var.config.container_version
   container_port    = try(var.config.container_port, 9000) # module-ecs default
+  container_command = try(var.config.container_command, [])
 
   read_only_root_filesystem = var.config.read_only_root_filesystem
   volumes                   = var.config.volumes
