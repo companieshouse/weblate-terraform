@@ -124,9 +124,11 @@ variable "ecs_configs" {
       required_memory    = 512
     }
     "db-init" = {  // custom one-off task to run database initialisation
+      desired_task_count = 1
       max_task_count     = 1
       required_cpus      = 256
       required_memory    = 512
+      service_autoscale_enabled = false
     }
   }
 }
