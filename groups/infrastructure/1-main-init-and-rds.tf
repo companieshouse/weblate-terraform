@@ -9,7 +9,7 @@ module "init_and_rds" {
     concourse_cidrs            = module.common_secrets.concourse_cidrs
     application_subnet_pattern = local.application_subnet_pattern
     application_subnet_ids     = local.application_subnet_ids
-    efs_vpc_cidrs              = data.aws_subnets.efs_vpc.cidr_blocks
+    efs_vpc_cidrs              = data.aws_subnets.efs_subnets.cidr_blocks
     /* ecs */
     ecs_shared_sg_name = local.ecs_shared_sg_name
     /* s3 */
