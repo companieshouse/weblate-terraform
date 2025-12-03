@@ -92,27 +92,30 @@ locals {
 
     read_only_root_filesystem = false
 
-    volumes = [
-      {
-        name = local.efs_shared_volume_name
-        efs_volume_configuration = {
-          file_system_id     = aws_efs_file_system.weblate.id
-          transit_encryption = "ENABLED"
-          authorization_config = {
-            access_point_id = aws_efs_access_point.weblate_accp.id
-          }
-        }
-      }
-    ]
+    # volumes = [
+    #   {
+    #     name = local.efs_shared_volume_name
+    #     efs_volume_configuration = {
+    #       file_system_id     = aws_efs_file_system.weblate.id
+    #       transit_encryption = "ENABLED"
+    #       authorization_config = {
+    #         access_point_id = aws_efs_access_point.weblate_accp.id
+    #       }
+    #     }
+    #   }
+    # ]
 
-    # Define the container mount points using that EFS volume
-    mount_points = [
-      for name in local.efs_mounts : {
-        sourceVolume  = local.efs_shared_volume_name
-        containerPath = "/app/${name}"
-        readOnly      = false
-      }
-    ]
+    # # Define the container mount points using that EFS volume
+    # mount_points = [
+    #   for name in local.efs_mounts : {
+    #     sourceVolume  = local.efs_shared_volume_name
+    #     containerPath = "/app/${name}"
+    #     readOnly      = false
+    #   }
+    # ]
+
+      volumes                        = []        # no EFS volumes needed
+      mount_points                   = []        # no EFS needed
 
 
     # Service configuration
