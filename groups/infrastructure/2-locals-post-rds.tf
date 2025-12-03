@@ -181,7 +181,7 @@ locals {
       env_file                       = "web"     # use the same env file as web
       volumes                        = []        # no EFS volumes needed
       mount_points                   = []        # no EFS needed
-      container_command              = ["/init_resources/init_resources.sh && env"]
+      container_command              = ["env && /init_resources/init_resources.sh"]
       use_task_container_healthcheck = false # one-off task - no healthcheck needed
       task_environment = [
         { name : "PGPASSWORD", value : module.common_secrets.db_master_password },
