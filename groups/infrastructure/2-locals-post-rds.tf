@@ -181,11 +181,13 @@ locals {
       env_file                       = "web"     # use the same env file as web
       volumes                        = []        # no EFS volumes needed
       mount_points                   = []        # no EFS needed
-      container_command              = ["env && /init_resources/init_resources.sh"]
+      container_command              = ["/bin/bash", "-c", "sleep 8000"]
+      # container_command              = ["/bin/bash", "-c", "env && /init_resources/init_resources.sh"]
       use_task_container_healthcheck = false # one-off task - no healthcheck needed
       task_environment = [
         { name : "PGPASSWORD", value : module.common_secrets.db_master_password },
         { name : "PSQL_MASTER_USER", value : module.common_secrets.db_master_username }
+        { name : "PGSSLMODE", value : "require" }
       ]
     }
   ]
