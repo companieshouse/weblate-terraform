@@ -121,7 +121,7 @@ variable "ecs_configs" {
       desired_task_count = 1
       max_task_count     = 1
       required_cpus      = 256
-      required_memory    = 512
+      required_memory    = 1024
     }
   }
 }
